@@ -18,24 +18,32 @@ public class UpperVoiceGUI : MonoBehaviour
 	int charIndex;
 	bool transition;
 	
+	public enum states {beginning, appearTransition, disappearTransition, do_nothing};
+	public states myState = states.do_nothing;
+	
 	void Start ()
 	{
 		upperVoiceTransition = "";
-		transition = false;
+		//transition = false;
+		myState = states.beginning;
 	}
 	
 	void Update ()
 	{
-		if (!transition)																// If no text is being processed
+		//if (!transition)
+																		// If no text is being processed
+		if(myState == states.beginning)
 		{
 			if(Globals.upperVoice != upperVoiceTransition)								// Check to see if there is new text to process
 			{
-				transition = true;
+				//transition = true;
+				myState = states.appearTransition;
 				charIndex = 0;
 				nextChar = Time.time + Globals.textSpeed;
 			}
 		}
-		else
+		//else
+		if(myState == states.appearTransition)
 		{																				// If text is being processed
 			if(Time.time > nextChar)													// At some time delta, add a new char to text
 			{
@@ -44,10 +52,39 @@ public class UpperVoiceGUI : MonoBehaviour
 				charIndex++;
 				if(charIndex >= Globals.upperVoice.Length)
 				{
-					transition = false;
+					//transition = false;
+					myState = states.do_nothing;
+					Invoke("Dissapear", 2);
 				}
 			}
 		}
+		
+		if(myState == states.disappearTransition)
+		{																				// If text is being processed
+			if(Time.time > nextChar)													// At some time delta, add a new char to text
+			{
+				Globals.upperVoice.Remove(charIndex,1);
+				Globals.upperVoice.Insert(charIndex,"0");
+				
+				upperVoiceTransition += Globals.upperVoice[charIndex].ToString();
+				
+				nextChar = Time.time + Globals.textSpeed;
+				charIndex++;
+				if(charIndex >= Globals.upperVoice.Length)
+				{
+					//transition = false;
+					myState = states.do_nothing;
+					//Invoke("Dissapear", 2);
+				}
+			}
+		}
+	}
+	
+	void Dissapear(){
+		charIndex = 0;
+		upperVoiceTransition = "";
+		myState = states.disappearTransition;	
+		
 	}
 	
 	void OnGUI()

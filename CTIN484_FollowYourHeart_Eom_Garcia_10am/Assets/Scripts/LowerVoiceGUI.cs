@@ -1,7 +1,7 @@
 /*
  * Things to implement:
  * - Customize font and guiText position to game screen resolution
- * 
+ * - After a certain time, disappear text
  * 
  * 
 */

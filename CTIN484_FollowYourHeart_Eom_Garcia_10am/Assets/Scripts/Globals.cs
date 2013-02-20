@@ -9,4 +9,5 @@ public class Globals : MonoBehaviour
 	public static string upperVoice = "";
 	public static string lowerVoice = "";
 	
+	
 }
