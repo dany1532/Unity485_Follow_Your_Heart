@@ -8,6 +8,7 @@ public class Globals : MonoBehaviour
 	public static float textSpeed = 0.025f;
 	public static string upperVoice = "";
 	public static string lowerVoice = "";
+	public static GameObject currentCheckPoint;
 	
 	
 }

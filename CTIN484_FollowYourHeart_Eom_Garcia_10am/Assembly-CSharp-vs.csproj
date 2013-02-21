@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\Globals.cs" />
      <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
      <Compile Include="Assets\Scripts\TempTriggerScript.cs" />
+     <Compile Include="Assets\Scripts\TorchTrigger.cs" />
      <Compile Include="Assets\Scripts\Triggers.cs" />
      <Compile Include="Assets\Scripts\UpperVoiceGUI.cs" />
   </ItemGroup>
