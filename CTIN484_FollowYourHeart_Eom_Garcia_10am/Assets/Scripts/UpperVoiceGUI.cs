@@ -11,102 +11,69 @@ using System.Collections;
 
 public class UpperVoiceGUI : MonoBehaviour
 {
-	string upperVoiceTransition;
-	public GUIStyle myStyle;
+	public GUIStyle myStyle;				// GUI style for text font color, size, etc.
+	public float fadeDuration = 1;			// The amount of time it takes to fade text in and out
+	public float freezeDuration = 3;		// The amount of time that text is shown at alpha = 1
+	float alpha;							// text color alpha in RGBA
+	float previousTime;						// last recorded time, to measure delta time
 	
-	float nextChar;
-	int charIndex;
-	bool transition;
-	
-	public enum states {beginning, appearTransition, disappearTransition, do_nothing};
-	public states myState = states.do_nothing;
+	public enum states { fadeIn, fadeOut, freezeText, doNothing };
+	public states state;
 	
 	void Start ()
 	{
-		upperVoiceTransition = "";
-		//transition = false;
-		myState = states.beginning;
+		state = states.doNothing;
+		alpha = 0f;
 	}
 	
-	void Update ()
+	void Update()
 	{
-		//if (!transition)
-																		// If no text is being processed
-		if(myState == states.beginning)
+		if(state == states.doNothing)
 		{
-			if(Globals.upperVoice != upperVoiceTransition)								// Check to see if there is new text to process
+			if (Globals.upperVoice != "")
 			{
-				//transition = true;
-				myState = states.appearTransition;
-				charIndex = 0;
-				nextChar = Time.time + Globals.textSpeed;
+				state = states.fadeIn;
+				previousTime = Time.time;
 			}
 		}
-		//else
-		if(myState == states.appearTransition)
-		{																				// If text is being processed
-			if(Time.time > nextChar)													// At some time delta, add a new char to text
+		else if(state == states.fadeIn)
+		{
+			float deltaTime = Time.time - previousTime;
+			alpha += deltaTime / fadeDuration;					// decrease text color alpha
+			previousTime = Time.time;
+			if(alpha >= 1)
 			{
-				upperVoiceTransition += Globals.upperVoice[charIndex].ToString();
-				nextChar = Time.time + Globals.textSpeed;
-				charIndex++;
-				if(charIndex >= Globals.upperVoice.Length)
-				{
-					//transition = false;
-					myState = states.do_nothing;
-					Invoke("Dissapear", 2);
-				}
+				alpha = 1;
+				state = states.freezeText;
 			}
 		}
-		
-		if(myState == states.disappearTransition)
-		{																				// If text is being processed
-			if(Time.time > nextChar)													// At some time delta, delete a char from text
+		else if(state == states.freezeText)
+		{
+			if(Time.time > previousTime + freezeDuration)
 			{
-				string tempString = upperVoiceTransition;
-				upperVoiceTransition = "";
-				for (int i = 0; i < charIndex; i++)
-				{
-					upperVoiceTransition += tempString[i];
-				}
-				nextChar = Time.time + Globals.textSpeed;
-				charIndex--;
-				if(charIndex < 0)
-				{
-					myState = states.do_nothing;
-				}
+				previousTime = Time.time;
+				state = states.fadeOut;
 			}
-			
-			/*
-			if(Time.time > nextChar)													// At some time delta, add a new char to text
-			{
-				Globals.upperVoice.Remove(charIndex,1);
-				Globals.upperVoice.Insert(charIndex,"0");
-				
-				upperVoiceTransition += Globals.upperVoice[charIndex].ToString();
-				
-				nextChar = Time.time + Globals.textSpeed;
-				charIndex++;
-				if(charIndex >= Globals.upperVoice.Length)
-				{
-					//transition = false;
-					myState = states.do_nothing;
-					//Invoke("Dissapear", 2);
-				}
-			}
-			*/
 		}
-	}
-	
-	void Dissapear()
-	{
-		charIndex = upperVoiceTransition.Length - 1;
-		nextChar = Time.time + Globals.textSpeed;
-		myState = states.disappearTransition;
+		else if(state == states.fadeOut)
+		{
+			float deltaTime = Time.time - previousTime;			// increase text color alpha
+			alpha -= deltaTime / fadeDuration;
+			previousTime = Time.time;
+			if(alpha <= 0)
+			{
+				alpha = 0;
+				state = states.doNothing;
+				Globals.upperVoice = "";
+			}
+		}
 	}
 	
 	void OnGUI()
 	{
-		GUI.Label(new Rect(10, 10, 100, 20),upperVoiceTransition , myStyle);
+		
+		myStyle.normal.textColor = new Color(1f, 1f, 1f, alpha);
+		
+		GUI.Label(new Rect(10, 10, 100, 20), Globals.upperVoice, myStyle);
 	}
 }
