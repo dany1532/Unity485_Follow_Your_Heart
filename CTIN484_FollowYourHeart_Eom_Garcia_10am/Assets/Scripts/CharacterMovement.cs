@@ -11,33 +11,33 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
-	private float vSpeed = 10;
-	private float hSpeed = 10;
+	private float walkSpeed = 10;
+	private float jumpSpeed = 12;
 	private float climbSpeed = 10;
 	
 	private float distToSides;
 	private float distToGround;
 	
-	// private enum states {idle, walk, climb, jump};
-	// public states state;
+	private enum states {idle, walk, climb, jump};
+	private states state;
 	
 	private bool canClimb;
 	
 	void Start()
 	{
+		state = states.idle;
+		
 		distToSides = collider.bounds.extents.x;
 		distToGround = collider.bounds.extents.y;
 	}
 	
 	void Update()
-	{	
+	{
 		// Jumping
 		if(Input.GetKey(KeyCode.Space) && isGrounded())
 		{
-			//if(isGrounded())
-			{
-				rigidbody.velocity = new Vector3(0, vSpeed, 0);
-			}
+			state = states.jump;
+			rigidbody.velocity = Vector3.up * jumpSpeed;
 		}
 		
 		// Climbing
@@ -45,12 +45,16 @@ public class CharacterMovement : MonoBehaviour
 		{
 			if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
 			{
+				state = states.climb;
 				rigidbody.useGravity = false;
+				rigidbody.velocity = Vector3.zero;
 				transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
 			}
 			else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
 			{
+				state = states.climb;
 				rigidbody.useGravity = false;
+				rigidbody.velocity = Vector3.zero;
 				transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
 			}
 		}
@@ -59,17 +63,17 @@ public class CharacterMovement : MonoBehaviour
 		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 		{
 			RaycastHit hit;
-			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * vSpeed))
+			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
 			{
-				transform.Translate (Vector3.left * Time.deltaTime * vSpeed );
+				transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
 			}
 		}
 		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
 		{
 			RaycastHit hit;
-			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * vSpeed))
+			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
 			{
-				transform.Translate (Vector3.right * Time.deltaTime * vSpeed );
+				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
 			}
 		}
 	}
