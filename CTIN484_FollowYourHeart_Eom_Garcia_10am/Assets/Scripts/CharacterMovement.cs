@@ -11,6 +11,105 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
+	private float vSpeed = 10;
+	private float hSpeed = 10;
+	private float climbSpeed = 10;
+	
+	private float distToSides;
+	private float distToGround;
+	
+	// private enum states {idle, walk, climb, jump};
+	// public states state;
+	
+	private bool canClimb;
+	
+	void Start()
+	{
+		distToSides = collider.bounds.extents.x;
+		distToGround = collider.bounds.extents.y;
+	}
+	
+	void Update()
+	{	
+		// Jumping
+		if(Input.GetKey(KeyCode.Space) && isGrounded())
+		{
+			//if(isGrounded())
+			{
+				rigidbody.velocity = new Vector3(0, vSpeed, 0);
+			}
+		}
+		
+		// Climbing
+		if(canClimb)
+		{
+			if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+			{
+				rigidbody.useGravity = false;
+				transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+			}
+			else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+			{
+				rigidbody.useGravity = false;
+				transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+			}
+		}
+		
+		// Horizontal movement
+		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+		{
+			RaycastHit hit;
+			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * vSpeed))
+			{
+				transform.Translate (Vector3.left * Time.deltaTime * vSpeed );
+			}
+		}
+		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+		{
+			RaycastHit hit;
+			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * vSpeed))
+			{
+				transform.Translate (Vector3.right * Time.deltaTime * vSpeed );
+			}
+		}
+	}
+	
+	void OnTriggerEnter(Collider collider)
+	{
+		if(collider.tag == "Ladder")
+		{
+			canClimb = true;
+		}
+	}
+	
+	void OnTriggerExit(Collider collider)
+	{
+		if(collider.tag == "Ladder")
+		{
+			canClimb = false;
+			this.rigidbody.useGravity = true;
+		}
+	}
+	
+	bool isGrounded()
+	{
+		// Casts two rays downward from each of character's sides
+		// If either ray collides, character is grounded
+		if(Physics.Raycast(transform.position - new Vector3(distToSides,0,0), -Vector3.up, distToGround + 0.1f) ||
+			Physics.Raycast(transform.position + new Vector3(distToSides,0,0), -Vector3.up, distToGround + 0.1f))
+		{
+			return true;
+		}
+		return false;
+	}
+}
+
+/*
+using UnityEngine;
+using System.Collections;
+
+public class CharacterMovement : MonoBehaviour
+{
 	
 	public float vSpeed = 5;
 	public float hSpeed = 5;
@@ -18,7 +117,7 @@ public class CharacterMovement : MonoBehaviour
 	
 	private bool isJumping;
 	
-	/** Added events and States */
+	// Added events and States
 	public enum events{canClimb, do_nothing};
 	public enum states{climbing, do_nothing};
 	public states state = states.do_nothing;
@@ -122,3 +221,4 @@ public class CharacterMovement : MonoBehaviour
 		}
 	}
 }
+*/
