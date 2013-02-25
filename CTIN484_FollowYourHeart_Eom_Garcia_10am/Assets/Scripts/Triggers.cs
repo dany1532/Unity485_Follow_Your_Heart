@@ -25,7 +25,6 @@ public class Triggers : MonoBehaviour
 			Globals.upperVoice = "Goodbye world.";
 		
 		//Story Events
-		
 		if(other.gameObject.name == "StoryTrigger1")
 		{
 			Globals.upperVoice = "I know I can move with A-D Keys...";
@@ -38,21 +37,41 @@ public class Triggers : MonoBehaviour
 		
 		if(other.gameObject.name == "StoryTrigger3")
 		{
-			Globals.upperVoice = "As I progress, I begin to wonder...";
+			Globals.upperVoice = "Nevertheless, these are all things I've done before...";
 		}
 		if(other.gameObject.name == "StoryTrigger4")
 		{
-			Globals.upperVoice = "Maybe I shouldn't have left...";
+			Globals.upperVoice = "Anyone can do them...";
 		}
 		
 		if(other.gameObject.name == "StoryTrigger5")
 		{
-			Globals.upperVoice = "What if I don't find anything...";
-			Invoke("lowerVoiceStory5",2);
+			Globals.upperVoice = "A ladder, maybe I can climb it with W";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger6")
+		{
+			Globals.upperVoice = "As I begin my climb, I start to wonder...";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger7")
+		{
+			Globals.upperVoice = "Am I doing the right thing?";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger8")
+		{
+			Globals.upperVoice = "What if I don't find the answer I'm looking for...";
+			Invoke("lowerVoiceStory8",2.4f);
+		}
+		
+		if(other.gameObject.name == "StoryTrigger9")
+		{
+			Globals.upperVoice = "Almost there...";
 		}
 	}
 	
-	void lowerVoiceStory5(){
+	void lowerVoiceStory8(){
 		Globals.lowerVoice = "Believe..";	
 	}
 }

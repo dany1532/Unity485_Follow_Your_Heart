@@ -11,9 +11,9 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
-	private float walkSpeed = 10;
-	private float jumpSpeed = 12;
-	private float climbSpeed = 10;
+	private float walkSpeed = 6;
+	private float jumpSpeed = 14;
+	private float climbSpeed = 6;
 	
 	private float distToSides;
 	private float distToGround;
