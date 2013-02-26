@@ -21,7 +21,8 @@ public class CharacterMovement : MonoBehaviour
 	private enum states {idle, walk, climb, jump};
 	private states state;
 	
-	private bool canClimb;
+	public bool canClimb;
+	public bool nearSwitch;
 	
 	void Start()
 	{
@@ -38,6 +39,24 @@ public class CharacterMovement : MonoBehaviour
 		{
 			state = states.jump;
 			rigidbody.velocity = Vector3.up * jumpSpeed;
+		}
+		
+		// Horizontal movement
+		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+		{
+			RaycastHit hit;
+			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+			{
+				transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+			}
+		}
+		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+		{
+			RaycastHit hit;
+			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+			{
+				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+			}
 		}
 		
 		// Climbing
@@ -59,30 +78,26 @@ public class CharacterMovement : MonoBehaviour
 			}
 		}
 		
-		// Horizontal movement
-		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+		// Switches
+		if(nearSwitch)
 		{
-			RaycastHit hit;
-			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+			if (Input.GetKeyDown (KeyCode.S))
 			{
-				transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
-			}
-		}
-		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-		{
-			RaycastHit hit;
-			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
-			{
-				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+				print ("Switch activated!");
 			}
 		}
 	}
+	
 	
 	void OnTriggerEnter(Collider collider)
 	{
 		if(collider.tag == "Ladder")
 		{
 			canClimb = true;
+		}
+		if(collider.tag == "Switch")
+		{
+			nearSwitch = true;
 		}
 	}
 	
@@ -92,6 +107,10 @@ public class CharacterMovement : MonoBehaviour
 		{
 			canClimb = false;
 			this.rigidbody.useGravity = true;
+		}
+		if(collider.tag == "Switch")
+		{
+			nearSwitch = false;
 		}
 	}
 	

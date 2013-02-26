@@ -1,16 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Triggers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CharacterMovement.cs">
     <Files>
-      <File FileName="..\..\..\..\Desktop\CTIN 483\DashRunner\Assets\Main.cs" Line="11" Column="23" />
+      <File FileName="Assets\Scripts\CharacterMovement.cs" Line="107" Column="4" />
       <File FileName="Assets\Scripts\TorchTrigger.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Globals.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Triggers.cs" Line="101" Column="46" />
-      <File FileName="Assets\Scripts\CharacterMovement.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\LowerVoiceGUI.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\UpperVoiceGUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\BeginningStory.cs" Line="12" Column="3" />
-      <File FileName="Assets\Scripts\Music_Manager.cs" Line="8" Column="27" />
+      <File FileName="Assets\Scripts\BeginningStory.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Music_Manager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
