@@ -24,6 +24,12 @@ public class Triggers : MonoBehaviour
 		if(other.gameObject.name == "TempTriggerObject1")
 			Globals.upperVoice = "Goodbye world.";
 		
+		if(other.gameObject.name == "Death_Fall"){
+			Vector3 loc = Globals.currentCheckPoint.transform.position;
+			loc.z = 1.25f;
+			this.transform.position = loc;
+		}
+		
 		//Story Events
 		if(other.gameObject.name == "StoryTrigger1")
 		{
@@ -68,6 +74,11 @@ public class Triggers : MonoBehaviour
 		if(other.gameObject.name == "StoryTrigger9")
 		{
 			Globals.upperVoice = "Almost there...";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger10")
+		{
+			Globals.upperVoice = "This torch, it makes me feel safe...";
 		}
 	}
 	

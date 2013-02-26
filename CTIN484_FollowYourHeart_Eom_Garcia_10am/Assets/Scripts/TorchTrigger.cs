@@ -20,8 +20,8 @@ public class TorchTrigger : MonoBehaviour {
 			if(!active){
 				Transform halo = this.transform.parent.FindChild("Torch_Halo");
 				Transform brightness = this.transform.parent.FindChild("Torch_Light");
-				halo.light.range = 10;
-				brightness.light.range = 4;
+				halo.light.range = 4;
+				brightness.light.range = 10;
 				Globals.currentCheckPoint = this.gameObject;
 			}
 			active = true;
