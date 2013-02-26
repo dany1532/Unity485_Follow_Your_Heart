@@ -80,9 +80,41 @@ public class Triggers : MonoBehaviour
 		{
 			Globals.upperVoice = "This torch, it makes me feel safe...";
 		}
+		
+		if(other.gameObject.name == "StoryTrigger11")
+		{
+			Globals.upperVoice = "I feel like this world wants to make me fall...";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger12")
+		{
+			Globals.upperVoice = "Like if it was almost intent on stopping me...";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger13")
+		{
+			Globals.upperVoice = "Why?";
+			Invoke("lowerVoiceStory13",2.4f);
+			//Globals.lowerVoice = "Whatever doesn't kill us...";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger14")
+		{
+			Globals.upperVoice = "This is the end...";
+			Invoke("lowerVoiceStory14",2.4f);
+			//Globals.lowerVoice = "Whatever doesn't kill us...";
+		}
 	}
 	
 	void lowerVoiceStory8(){
 		Globals.lowerVoice = "Believe..";	
+	}
+	
+	void lowerVoiceStory13(){
+		Globals.lowerVoice = "Whatever doesn't kill us...";	
+	}
+	
+	void lowerVoiceStory14(){
+		Globals.lowerVoice = "For now...";	
 	}
 }
