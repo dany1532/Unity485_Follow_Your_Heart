@@ -88,6 +88,13 @@ public class CharacterMovement : MonoBehaviour
 		}
 	}
 	
+	void OnCollisionEnter()
+	{
+		if (rigidbody.velocity.y > 0)
+		{
+			rigidbody.velocity = Vector3.zero;
+		}
+	}
 	
 	void OnTriggerEnter(Collider collider)
 	{
