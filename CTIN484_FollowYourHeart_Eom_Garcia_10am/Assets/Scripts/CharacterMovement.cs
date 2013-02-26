@@ -11,7 +11,7 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
-	private float walkSpeed = 6;
+	public float walkSpeed = 6;
 	private float jumpSpeed = 14;
 	private float climbSpeed = 6;
 	
@@ -34,6 +34,9 @@ public class CharacterMovement : MonoBehaviour
 	
 	void Update()
 	{
+		// ** SPEED HACK **
+		
+		
 		// Jumping
 		if(Input.GetKey(KeyCode.Space) && isGrounded())
 		{

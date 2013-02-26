@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\CharacterMovement.cs" />
      <Compile Include="Assets\Scripts\DestructiblePlatform.cs" />
      <Compile Include="Assets\Scripts\Globals.cs" />
+     <Compile Include="Assets\Scripts\Hacks.cs" />
      <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
      <Compile Include="Assets\Scripts\Music_Manager.cs" />
      <Compile Include="Assets\Scripts\TempTriggerScript.cs" />
