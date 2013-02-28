@@ -24,7 +24,8 @@ public class Triggers : MonoBehaviour
 		if(other.gameObject.name == "TempTriggerObject1")
 			Globals.upperVoice = "Goodbye world.";
 		
-		if(other.gameObject.name == "Death_Fall"){
+		if(other.gameObject.name == "Death_Fall" ||
+			other.gameObject.name == "Boulder_Spikes"){
 			Vector3 loc = Globals.currentCheckPoint.transform.position;
 			loc.z = 1.25f;
 			this.transform.position = loc;
