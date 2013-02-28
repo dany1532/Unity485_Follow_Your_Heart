@@ -105,6 +105,17 @@ public class Triggers : MonoBehaviour
 			Invoke("lowerVoiceStory14",2.4f);
 			//Globals.lowerVoice = "Whatever doesn't kill us...";
 		}
+		if(other.gameObject.name == "StoryTrigger15")
+		{
+			Globals.upperVoice = "Can't reach, maybe by pushing the block...";
+		}
+		
+		if(other.gameObject.name == "StoryTrigger16")
+		{
+			Globals.upperVoice = "I can use F to throw rocks\n and destroy the shadows...";
+			Invoke("lowerVoiceStory16",2.4f);
+			//Globals.lowerVoice = "Whatever doesn't kill us...";
+		}
 	}
 	
 	void lowerVoiceStory8(){
@@ -117,5 +128,8 @@ public class Triggers : MonoBehaviour
 	
 	void lowerVoiceStory14(){
 		Globals.lowerVoice = "For now...";	
+	}
+	void lowerVoiceStory16(){
+		Globals.lowerVoice = "Shadows of Doubt";	
 	}
 }

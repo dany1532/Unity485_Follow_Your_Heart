@@ -17,8 +17,8 @@ public class Globals : MonoBehaviour
 		vbParent = (new GameObject()).transform;
 		vbParent.position = GameObject.Find("_Hero").transform.position;
 		vbParent.gameObject.name = "Candle";
-		for (int i=0; i<1000; i++) {
-			Vector3 pos = new Vector3(Random.value *-1000,Random.value*100, Random.value*200 + 10);
+		for (int i=0; i<200; i++) {
+			Vector3 pos = new Vector3(Random.value *+720,Random.value*100, Random.value*200 + 10);
 			Transform vb = Instantiate(vectionCandle, pos, Quaternion.identity) as Transform;
 			vb.parent = vbParent;
 		}
@@ -29,7 +29,7 @@ public class Globals : MonoBehaviour
 		foreach (Transform child in vbParent){
 			if (-heroX+child.position.x > 100){
 				Vector3 loc = child.position;
-				loc.x += 100;
+				loc.x -= 200;
 				child.position = loc;
 			}
 		}

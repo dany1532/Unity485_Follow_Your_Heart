@@ -14,13 +14,17 @@ public class CharacterMovement : MonoBehaviour
 	public float walkSpeed = 6;
 	private float jumpSpeed = 14;
 	private float climbSpeed = 6;
+	private float pushingSpeed = 3;
 	
 	private float distToSides;
 	private float distToGround;
 	
-	private enum states {idle, walk, climb, jump};
+	public GameObject rockPrefab;
+	
+	public enum states {idle, walk, climb, jump, pushingRight, pushingLeft};
 	private states state;
 	
+	public states pushState = states.idle;
 	public bool canClimb;
 	public bool nearSwitch;
 	
@@ -79,6 +83,12 @@ public class CharacterMovement : MonoBehaviour
 				rigidbody.velocity = Vector3.zero;
 				transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
 			}
+			
+			if(Input.GetKey(KeyCode.Space) && state == states.climb)
+			{
+				state = states.jump;
+				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
 		}
 		
 		// Switches
@@ -89,6 +99,12 @@ public class CharacterMovement : MonoBehaviour
 				print ("Switch activated!");
 			}
 		}
+		
+		if(Input.GetKeyDown(KeyCode.F)){
+			Vector3 loc = this.transform.position;
+			loc.x -= 1;
+			Instantiate(rockPrefab,	loc, Quaternion.identity);
+		}
 	}
 	
 	void OnCollisionEnter()
@@ -97,6 +113,7 @@ public class CharacterMovement : MonoBehaviour
 		{
 			rigidbody.velocity = Vector3.zero;
 		}
+		
 	}
 	
 	void OnTriggerEnter(Collider collider)
@@ -108,6 +125,15 @@ public class CharacterMovement : MonoBehaviour
 		if(collider.tag == "Switch")
 		{
 			nearSwitch = true;
+		}
+		
+		if(collider.tag == "Push_Block"){
+			if(Input.GetKey(KeyCode.A)){
+				pushState = states.pushingLeft;
+			}
+			else if(Input.GetKey(KeyCode.D)){
+				pushState = states.pushingRight;
+			}
 		}
 	}
 	
@@ -121,6 +147,10 @@ public class CharacterMovement : MonoBehaviour
 		if(collider.tag == "Switch")
 		{
 			nearSwitch = false;
+		}
+		
+		if(collider.tag == "Push_Block"){
+			pushState = states.idle;
 		}
 	}
 	

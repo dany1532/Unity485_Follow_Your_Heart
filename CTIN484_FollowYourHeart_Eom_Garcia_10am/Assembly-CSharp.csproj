@@ -50,7 +50,10 @@
      <Compile Include="Assets\Scripts\Globals.cs" />
      <Compile Include="Assets\Scripts\Hacks.cs" />
      <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
+     <Compile Include="Assets\Scripts\MovingPlatform.cs" />
      <Compile Include="Assets\Scripts\Music_Manager.cs" />
+     <Compile Include="Assets\Scripts\Push_Block.cs" />
+     <Compile Include="Assets\Scripts\Rock.cs" />
      <Compile Include="Assets\Scripts\TempTriggerScript.cs" />
      <Compile Include="Assets\Scripts\TorchTrigger.cs" />
      <Compile Include="Assets\Scripts\TriggerNumbering.cs" />
