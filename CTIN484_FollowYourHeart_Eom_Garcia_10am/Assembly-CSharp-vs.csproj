@@ -45,10 +45,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BeginningStory.cs" />
-     <Compile Include="Assets\Scripts\CharacterMovement.cs" />
      <Compile Include="Assets\Scripts\DestructiblePlatform.cs" />
      <Compile Include="Assets\Scripts\Globals.cs" />
      <Compile Include="Assets\Scripts\Hacks.cs" />
+     <Compile Include="Assets\Scripts\Hero\CharacterMovement.cs" />
+     <Compile Include="Assets\Scripts\Hero\IsGroundedTrigger.cs" />
      <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
      <Compile Include="Assets\Scripts\MovingPlatform.cs" />
      <Compile Include="Assets\Scripts\Music_Manager.cs" />

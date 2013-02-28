@@ -25,6 +25,7 @@ public class CharacterMovement : MonoBehaviour
 	private states state;
 	
 	public states pushState = states.idle;
+	public bool isGrounded;
 	public bool canClimb;
 	public bool nearSwitch;
 	
@@ -42,7 +43,7 @@ public class CharacterMovement : MonoBehaviour
 		
 		
 		// Jumping
-		if(Input.GetKey(KeyCode.Space) && isGrounded())
+		if(Input.GetKey(KeyCode.Space) && isGrounded)
 		{
 			state = states.jump;
 			rigidbody.velocity = Vector3.up * jumpSpeed;
@@ -154,6 +155,7 @@ public class CharacterMovement : MonoBehaviour
 		}
 	}
 	
+	/*
 	bool isGrounded()
 	{
 		// Casts two rays downward from each of character's sides
@@ -165,6 +167,7 @@ public class CharacterMovement : MonoBehaviour
 		}
 		return false;
 	}
+	*/
 }
 
 /*
