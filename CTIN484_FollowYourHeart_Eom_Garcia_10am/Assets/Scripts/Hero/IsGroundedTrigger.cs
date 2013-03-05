@@ -21,6 +21,8 @@ public class IsGroundedTrigger : MonoBehaviour {
 		if(other.tag == "Ground")
 		{
 			charMovement.isGrounded = true;
+			charMovement.state = CharacterMovement.states.idle;
+			Physics.gravity = Vector3.up * charMovement.gravityAccel;
 		}
 	}
 	

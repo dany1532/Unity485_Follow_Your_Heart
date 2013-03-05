@@ -16,13 +16,12 @@ public class CharacterMovement : MonoBehaviour
 	private float climbSpeed = 6;
 	private float pushingSpeed = 3;
 	
-	private float distToSides;
-	private float distToGround;
+	public float gravityAccel;
 	
 	public GameObject rockPrefab;
 	
-	public enum states {idle, walk, climb, jump, pushingRight, pushingLeft};
-	private states state;
+	public enum states {idle, walk, climb, jump, floating, pushingRight, pushingLeft,};
+	public states state;
 	
 	public states pushState = states.idle;
 	public bool isGrounded;
@@ -32,9 +31,7 @@ public class CharacterMovement : MonoBehaviour
 	void Start()
 	{
 		state = states.idle;
-		
-		distToSides = collider.bounds.extents.x;
-		distToGround = collider.bounds.extents.y;
+		gravityAccel = Physics.gravity.y;
 	}
 	
 	void Update()
@@ -88,7 +85,23 @@ public class CharacterMovement : MonoBehaviour
 			if(Input.GetKey(KeyCode.Space) && state == states.climb)
 			{
 				state = states.jump;
+				rigidbody.useGravity = true;
 				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
+		}
+		
+		// Floating
+		if(Input.GetKeyDown(KeyCode.Q) && !isGrounded)
+		{
+			if(state != states.floating)
+			{
+				state = states.floating;
+				Physics.gravity = Vector3.up * gravityAccel / 2;
+			}
+			else
+			{
+				state = states.jump;
+				Physics.gravity = Vector3.up * gravityAccel;
 			}
 		}
 		
@@ -154,137 +167,4 @@ public class CharacterMovement : MonoBehaviour
 			pushState = states.idle;
 		}
 	}
-	
-	/*
-	bool isGrounded()
-	{
-		// Casts two rays downward from each of character's sides
-		// If either ray collides, character is grounded
-		if(Physics.Raycast(transform.position - new Vector3(distToSides,0,0), -Vector3.up, distToGround + 0.1f) ||
-			Physics.Raycast(transform.position + new Vector3(distToSides,0,0), -Vector3.up, distToGround + 0.1f))
-		{
-			return true;
-		}
-		return false;
-	}
-	*/
 }
-
-/*
-using UnityEngine;
-using System.Collections;
-
-public class CharacterMovement : MonoBehaviour
-{
-	
-	public float vSpeed = 5;
-	public float hSpeed = 5;
-	public float climbSpeed = .5f;
-	
-	private bool isJumping;
-	
-	// Added events and States
-	public enum events{canClimb, do_nothing};
-	public enum states{climbing, do_nothing};
-	public states state = states.do_nothing;
-	public events myEvent = events.do_nothing;
-	
-	void Start ()
-	{
-		isJumping = false;
-	}
-	
-	void Update ()
-	{
-		if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space))
-			Jump();
-		
-	//got near a ladder, you can climb...
-		if(myEvent == events.canClimb)
-			Climb();
-		
-		HorizontalMovement();
-	}
-	
-	void Jump()
-	{
-		if(!isJumping && state != states.climbing)
-		{
-			rigidbody.velocity = new Vector3(rigidbody.velocity.x, vSpeed, 0);
-			isJumping = true;
-		}
-	}
-	
-	void Climb(){
-	//while pressing up, you can climb ladder
-		if(Input.GetKey(KeyCode.UpArrow)){
-			rigidbody.velocity = Vector3.zero; 
-			state = states.climbing;
-			
-			Vector3 loc = this.transform.position;
-			loc.y += climbSpeed;
-			this.transform.position = loc;
-		}
-	//while pressing down, you can climb down ladder
-		else if(Input.GetKey(KeyCode.DownArrow)){
-			if(state == states.climbing){
-				rigidbody.velocity = Vector3.zero;
-				state = states.climbing;
-				
-				Vector3 loc = this.transform.position;
-				loc.y -= climbSpeed;
-				this.transform.position = loc;
-			}
-		}
-	//if you're climbing, disable gravity
-		if(state == states.climbing){
-			this.rigidbody.useGravity = false;	
-		}
-		
-		
-	}
-	
-	void HorizontalMovement()
-	{
-		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-		{
-			rigidbody.velocity = new Vector3(-hSpeed, rigidbody.velocity.y, 0);
-		}
-		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-		{
-			rigidbody.velocity = new Vector3(hSpeed, rigidbody.velocity.y, 0);
-		}
-		else
-		{
-			rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
-		}
-	}
-	
-	void OnCollisionEnter(Collision collision)
-	{	
-		if(collision.collider.tag == "Ground")						// if the colliding object is tagged "Ground"
-		{
-			Vector3 contactPoint = collision.contacts[0].point;
-			
-			if(transform.position.y > contactPoint.y)				// then if the character is higher than the point of contact
-			{
-				isJumping = false;
-			}
-		}
-	}
-	
-	void OnTriggerEnter(Collider collider){
-		if(collider.tag == "Ladder"){
-			myEvent = events.canClimb;
-		}
-	}
-	
-	void OnTriggerExit(Collider collider){
-		if(collider.tag == "Ladder"){
-			myEvent = events.do_nothing;
-			state = states.do_nothing;
-			this.rigidbody.useGravity = true;
-		}
-	}
-}
-*/
