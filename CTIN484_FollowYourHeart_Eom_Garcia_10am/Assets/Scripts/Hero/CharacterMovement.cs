@@ -25,6 +25,10 @@ public class CharacterMovement : MonoBehaviour
 	public bool canClimb;
 	public bool nearSwitch;
 	
+	private float ladderPosX;
+	private float ladderPosDiff = 0.2f;	// Maximum distance between ladderPosX and character before clamping character to ladder
+	private float ladderPosAdd = 1f;	// Adding a length to the left or right of ladderPosX to distinguish player to the left or right 
+	
 	void Start()
 	{
 		state = states.idle;
@@ -41,9 +45,16 @@ public class CharacterMovement : MonoBehaviour
 		}
 		if(Input.GetKey(KeyCode.Space) && state == states.climb)
 		{
-			state = states.jump;
-			rigidbody.useGravity = true;
-			rigidbody.velocity = Vector3.up * jumpSpeed;
+			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+			{
+				state = states.jump;
+				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
+			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+			{
+				state = states.jump;
+				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
 		}
 		
 		// Horizontal movement
@@ -64,22 +75,29 @@ public class CharacterMovement : MonoBehaviour
 			}
 		}
 		
-		// Climbing
+		// Ladder climbing
 		if(canClimb)
 		{
-			if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+			if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
 			{
-				state = states.climb;
-				rigidbody.useGravity = false;
-				rigidbody.velocity = Vector3.zero;
-				transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+				if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+				{
+					state = states.climb;
+					rigidbody.useGravity = false;
+					rigidbody.velocity = Vector3.zero;
+					transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+				}
+				else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+				{
+					state = states.climb;
+					rigidbody.useGravity = false;
+					rigidbody.velocity = Vector3.zero;
+					transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+				}
 			}
-			else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+			if(state == states.climb)
 			{
-				state = states.climb;
-				rigidbody.useGravity = false;
-				rigidbody.velocity = Vector3.zero;
-				transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+				transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
 			}
 		}
 		
@@ -95,14 +113,17 @@ public class CharacterMovement : MonoBehaviour
 				state = states.jump;
 			}
 		}
-		if(state == states.floating && rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
+		if(state == states.floating)
 		{
+			if(rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
+			{
 			rigidbody.useGravity = false;
 			rigidbody.velocity = new Vector3(0,-floatingSpeed,0);
-		}
-		else
-		{
+			}
+			else
+			{
 			rigidbody.useGravity = true;
+			}
 		}
 		
 		// Switches
@@ -131,6 +152,7 @@ public class CharacterMovement : MonoBehaviour
 	{
 		if(collider.tag == "Ladder")
 		{
+			ladderPosX = collider.transform.position.x;
 			canClimb = true;
 		}
 		if(collider.tag == "Switch")
