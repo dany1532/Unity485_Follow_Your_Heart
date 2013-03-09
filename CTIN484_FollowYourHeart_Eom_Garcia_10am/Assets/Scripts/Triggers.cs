@@ -17,13 +17,14 @@ public class Triggers : MonoBehaviour
 	
 	void OnTriggerEnter(Collider other)
 	{
+		/*
 		if(other.gameObject.name == "TempTriggerObject2")
 		{
 			Globals.lowerVoice = "Hello world.";
 		}
 		if(other.gameObject.name == "TempTriggerObject1")
 			Globals.upperVoice = "Goodbye world.";
-		
+		 */
 		if(other.gameObject.name == "Death_Fall" ||
 			other.gameObject.name == "Boulder_Spikes"){
 			Vector3 loc = Globals.currentCheckPoint.transform.position;
@@ -31,7 +32,8 @@ public class Triggers : MonoBehaviour
 			this.transform.position = loc;
 		}
 		
-		//Story Events
+		
+		/*//Story Events
 		if(other.gameObject.name == "StoryTrigger1")
 		{
 			Globals.upperVoice = "I know I can move with A-D Keys...";
@@ -131,5 +133,7 @@ public class Triggers : MonoBehaviour
 	}
 	void lowerVoiceStory16(){
 		Globals.lowerVoice = "Shadows of Doubt";	
+	}
+	*/
 	}
 }

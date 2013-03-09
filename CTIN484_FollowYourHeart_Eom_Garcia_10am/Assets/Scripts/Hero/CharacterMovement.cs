@@ -12,7 +12,7 @@ using System.Collections;
 public class CharacterMovement : MonoBehaviour
 {
 	public float walkSpeed = 6;
-	private float jumpSpeed = 14;
+	private float jumpSpeed = 15;
 	private float climbSpeed = 6;
 	private float pushingSpeed = 3;
 	
