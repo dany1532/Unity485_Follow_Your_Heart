@@ -12,8 +12,9 @@ public class IsGroundedTrigger : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ()
+	{
+		
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -22,7 +23,6 @@ public class IsGroundedTrigger : MonoBehaviour {
 		{
 			charMovement.isGrounded = true;
 			charMovement.state = CharacterMovement.states.idle;
-			Physics.gravity = Vector3.up * charMovement.gravityAccel;
 		}
 	}
 	

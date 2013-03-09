@@ -19,7 +19,7 @@ public class Hacks : MonoBehaviour {
 		{
 			if(cm.walkSpeed == 6)
 			{
-				cm.walkSpeed = 12;
+				cm.walkSpeed = 20;
 			}
 			else
 			{

@@ -33,11 +33,11 @@ public class Push_Block : MonoBehaviour {
 	}
 	
 	public void checkIfPushed(){
-		if(movScript.pushState == CharacterMovement.states.pushingLeft){
+		if(movScript.state == CharacterMovement.states.pushingLeft){
 				myState = movementState.pushedLeft;
 		}
 		
-		else if(movScript.pushState == CharacterMovement.states.pushingRight){
+		else if(movScript.state == CharacterMovement.states.pushingRight){
 				myState = movementState.pushedRight;
 		}
 	}

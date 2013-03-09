@@ -15,35 +15,46 @@ public class CharacterMovement : MonoBehaviour
 	private float jumpSpeed = 15;
 	private float climbSpeed = 6;
 	private float pushingSpeed = 3;
-	
-	public float gravityAccel;
+	public float floatingSpeed = 1;
 	
 	public GameObject rockPrefab;
 	
-	public enum states {idle, walk, climb, jump, floating, pushingRight, pushingLeft,};
+	public enum states {idle, walk, climb, jump, floating, pushingRight, pushingLeft};
 	public states state;
-	
-	public states pushState = states.idle;
 	public bool isGrounded;
 	public bool canClimb;
 	public bool nearSwitch;
 	
+	private float ladderPosX;
+	private float ladderPosDiff = 0.2f;	// Maximum distance between ladderPosX and character before clamping character to ladder
+	private float ladderPosAdd = 1f;	// Adding a length to the left or right of ladderPosX to distinguish player to the left or right 
+	
 	void Start()
 	{
 		state = states.idle;
-		gravityAccel = Physics.gravity.y;
 	}
 	
 	void Update()
 	{
-		// ** SPEED HACK **
-		
 		
 		// Jumping
 		if(Input.GetKey(KeyCode.Space) && isGrounded)
 		{
 			state = states.jump;
 			rigidbody.velocity = Vector3.up * jumpSpeed;
+		}
+		if(Input.GetKey(KeyCode.Space) && state == states.climb)
+		{
+			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+			{
+				state = states.jump;
+				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
+			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+			{
+				state = states.jump;
+				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
 		}
 		
 		// Horizontal movement
@@ -64,44 +75,54 @@ public class CharacterMovement : MonoBehaviour
 			}
 		}
 		
-		// Climbing
+		// Ladder climbing
 		if(canClimb)
 		{
-			if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+			if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
 			{
-				state = states.climb;
-				rigidbody.useGravity = false;
-				rigidbody.velocity = Vector3.zero;
-				transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+				if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+				{
+					state = states.climb;
+					rigidbody.useGravity = false;
+					rigidbody.velocity = Vector3.zero;
+					transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+				}
+				else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+				{
+					state = states.climb;
+					rigidbody.useGravity = false;
+					rigidbody.velocity = Vector3.zero;
+					transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+				}
 			}
-			else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+			if(state == states.climb)
 			{
-				state = states.climb;
-				rigidbody.useGravity = false;
-				rigidbody.velocity = Vector3.zero;
-				transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
-			}
-			
-			if(Input.GetKey(KeyCode.Space) && state == states.climb)
-			{
-				state = states.jump;
-				rigidbody.useGravity = true;
-				rigidbody.velocity = Vector3.up * jumpSpeed;
+				transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
 			}
 		}
 		
 		// Floating
-		if(Input.GetKeyDown(KeyCode.Q) && !isGrounded)
+		if(Input.GetKeyDown(KeyCode.E) && !isGrounded)	// toggle floating while in air
 		{
 			if(state != states.floating)
 			{
 				state = states.floating;
-				Physics.gravity = Vector3.up * gravityAccel / 2;
 			}
 			else
 			{
 				state = states.jump;
-				Physics.gravity = Vector3.up * gravityAccel;
+			}
+		}
+		if(state == states.floating)
+		{
+			if(rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
+			{
+			rigidbody.useGravity = false;
+			rigidbody.velocity = new Vector3(0,-floatingSpeed,0);
+			}
+			else
+			{
+			rigidbody.useGravity = true;
 			}
 		}
 		
@@ -123,10 +144,7 @@ public class CharacterMovement : MonoBehaviour
 	
 	void OnCollisionEnter()
 	{
-		if (rigidbody.velocity.y > 0)
-		{
-			rigidbody.velocity = Vector3.zero;
-		}
+		
 		
 	}
 	
@@ -134,6 +152,7 @@ public class CharacterMovement : MonoBehaviour
 	{
 		if(collider.tag == "Ladder")
 		{
+			ladderPosX = collider.transform.position.x;
 			canClimb = true;
 		}
 		if(collider.tag == "Switch")
@@ -143,10 +162,10 @@ public class CharacterMovement : MonoBehaviour
 		
 		if(collider.tag == "Push_Block"){
 			if(Input.GetKey(KeyCode.A)){
-				pushState = states.pushingLeft;
+				state = states.pushingLeft;
 			}
 			else if(Input.GetKey(KeyCode.D)){
-				pushState = states.pushingRight;
+				state = states.pushingRight;
 			}
 		}
 	}
@@ -164,7 +183,7 @@ public class CharacterMovement : MonoBehaviour
 		}
 		
 		if(collider.tag == "Push_Block"){
-			pushState = states.idle;
+			state = states.idle;
 		}
 	}
 }
