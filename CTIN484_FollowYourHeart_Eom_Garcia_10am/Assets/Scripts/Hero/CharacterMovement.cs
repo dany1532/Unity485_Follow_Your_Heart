@@ -25,6 +25,7 @@ public class CharacterMovement : MonoBehaviour
 	public bool canClimb;
 	public bool nearSwitch;
 	public bool hasPills = false;
+	public bool nextLevel = false;
 	public bool inCutscene = false;
 	
 	private float ladderPosX;

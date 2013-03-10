@@ -13,6 +13,7 @@ public class Globals : MonoBehaviour
 	public Transform vectionCandle;
 	public Transform vbParent;
 	public Transform candlePrefab;
+	public Transform rainPrefab;
 	public GameObject tutorialLight;
 	private static int currentLevel = 0;
 	private static bool fadeLight = false;
@@ -34,6 +35,12 @@ public class Globals : MonoBehaviour
 		fadeLight = true;
 	}
 	
+	public static void FadeLight(){
+		fadeLight = true;	
+	}
+	
+	
+	
 	void Update(){
 		float heroX = GameObject.Find("_Hero").transform.position.x;
 		foreach (Transform child in vbParent){
@@ -50,9 +57,14 @@ public class Globals : MonoBehaviour
 			
 			if(intensity <= 0){
 				fadeLight = false;
-				Application.LoadLevel(currentLevel);
+				Invoke("goToNextLevel",2);
+				
 			}
 		}
+	}
+	
+	void goToNextLevel(){
+		Application.LoadLevel(currentLevel);
 	}
 	
 

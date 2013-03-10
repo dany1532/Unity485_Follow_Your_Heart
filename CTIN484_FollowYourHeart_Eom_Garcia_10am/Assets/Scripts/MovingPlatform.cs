@@ -9,9 +9,15 @@ public class MovingPlatform : MonoBehaviour {
 	public enum TraversalState{up, down, right, left, stop};
 	public TraversalState platState = TraversalState.up;
 	public TraversalState pastState = TraversalState.stop;
+	public bool isDestructible = false;
 	
 	// Use this for initialization
 	void Start () {
+		getDesiredPosition();
+		
+	}
+	
+	void getDesiredPosition(){
 		Vector3 loc = this.transform.position;
 		if(platState == TraversalState.up)
 			desiredPosition = loc.y + traversalDistance;
@@ -19,10 +25,24 @@ public class MovingPlatform : MonoBehaviour {
 		
 		if(platState == TraversalState.right)
 			desiredPosition = loc.x + traversalDistance;	
-		
 	}
 	
-
+	void OnCollisionEnter ()
+	{
+		if(isDestructible){
+			platState = TraversalState.right;
+			getDesiredPosition();
+			Invoke("fall",2f);
+		}
+	}
+	
+	void fall(){
+		Vector3 loc = this.transform.position;
+		platState = TraversalState.down;
+		desiredPosition = loc.y - (traversalDistance + 1140);
+		movementSpeed = 30;
+		Destroy(this.gameObject,2f);
+	}
 	
 	// Update is called once per frame
 	void Update () {

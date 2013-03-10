@@ -4,9 +4,10 @@ using System.Collections;
 public class Story_Triggers : MonoBehaviour {
 	TextMesh textMeshChild;
 	int myId;
-	public enum StoryEvent{ev0,ev1, ev2, ev3, ev4, ev5, ev6,ev7, do_nothing};
-	public StoryEvent myEvent;
-	public bool startCutscene = false;
+	private enum StoryEvent{ev0,ev1, ev2, ev3, ev4, ev5, ev6,ev7, do_nothing};
+	private StoryEvent myEvent;
+	private bool startCutscene = false;
+	public GameObject rainPrefab;
 	
 	void Start(){
 		Transform f = transform.FindChild("Trigger_Location");
@@ -57,11 +58,15 @@ public class Story_Triggers : MonoBehaviour {
 				if(hasPills){
 					Globals.lowerVoice = "Thank you dear, now go to rest...";
 				}
+				other.gameObject.GetComponent<CharacterMovement>().nextLevel = true;
 			}
 			
 			if(myId == 9){
-				other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
-				Globals.loadNextLevelTutorial();
+				bool nextLevel = other.gameObject.GetComponent<CharacterMovement>().nextLevel;
+				if(nextLevel){
+					other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
+					Globals.loadNextLevelTutorial();
+				}
 			}
 			
 			if(myId == 10){
@@ -72,6 +77,40 @@ public class Story_Triggers : MonoBehaviour {
 					Globals.deathMother = true;
 				}
 			}
+			
+			if(myId == 11){
+				if(!startCutscene){
+					Vector3 pos = other.gameObject.transform.position;
+					pos.y += 50;
+					pos.x -= 165;
+					Instantiate(rainPrefab,pos,Quaternion.identity);
+				}
+				Globals.upperVoice = "I was scared, so I ran...";
+				startCutscene = true;
+			}
+			
+			if(myId == 12){
+				Globals.upperVoice = "I didn't know where I was going...";
+			}
+			
+			if(myId == 13){
+				Globals.upperVoice = "I just couldn't think...";
+			}
+			
+			if(myId == 14){
+				Globals.upperVoice = "I felt as if the world was collapsing around me...";
+			}
+			
+			if(myId == 15){
+				Globals.upperVoice = "Until finally...";
+			}
+			
+			if(myId == 16){
+				Globals.upperVoice = "I fall...";
+				GameObject.Find("TutorialLight").light.intensity = 0;
+				Globals.loadNextLevelTutorial();
+			}
+			
 	 }		
 }
 	
