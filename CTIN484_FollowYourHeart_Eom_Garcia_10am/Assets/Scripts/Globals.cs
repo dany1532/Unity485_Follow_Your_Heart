@@ -7,11 +7,16 @@ public class Globals : MonoBehaviour
 	public static float textSpeed = 0.025f;
 	public static string upperVoice = "";
 	public static string lowerVoice = "";
+	public static bool deathMother = false;
 	
 	public static GameObject currentCheckPoint;
 	public Transform vectionCandle;
 	public Transform vbParent;
 	public Transform candlePrefab;
+	public GameObject tutorialLight;
+	private static int currentLevel = 0;
+	private static bool fadeLight = false;
+	public int fadeSpeed = 3;
 	
 	void Awake() {
 		vbParent = (new GameObject()).transform;
@@ -24,6 +29,11 @@ public class Globals : MonoBehaviour
 		}
 	}
 	
+	public static void loadNextLevelTutorial(){
+		currentLevel++;
+		fadeLight = true;
+	}
+	
 	void Update(){
 		float heroX = GameObject.Find("_Hero").transform.position.x;
 		foreach (Transform child in vbParent){
@@ -31,6 +41,16 @@ public class Globals : MonoBehaviour
 				Vector3 loc = child.position;
 				loc.x -= 200;
 				child.position = loc;
+			}
+		}
+		
+		if(fadeLight){
+			float intensity = tutorialLight.light.intensity - Time.deltaTime/(fadeSpeed);
+			tutorialLight.light.intensity = intensity;
+			
+			if(intensity <= 0){
+				fadeLight = false;
+				Application.LoadLevel(currentLevel);
 			}
 		}
 	}

@@ -24,6 +24,8 @@ public class CharacterMovement : MonoBehaviour
 	public bool isGrounded;
 	public bool canClimb;
 	public bool nearSwitch;
+	public bool hasPills = false;
+	public bool inCutscene = false;
 	
 	private float ladderPosX;
 	private float ladderPosDiff = 0.2f;	// Maximum distance between ladderPosX and character before clamping character to ladder
@@ -36,7 +38,7 @@ public class CharacterMovement : MonoBehaviour
 	
 	void Update()
 	{
-		
+	  if(!inCutscene){	
 		// Jumping
 		if(Input.GetKey(KeyCode.Space) && isGrounded)
 		{
@@ -140,6 +142,7 @@ public class CharacterMovement : MonoBehaviour
 			loc.x -= 1;
 			Instantiate(rockPrefab,	loc, Quaternion.identity);
 		}
+	  }
 	}
 	
 	void OnCollisionEnter()

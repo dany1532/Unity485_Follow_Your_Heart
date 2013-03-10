@@ -22,6 +22,8 @@ public class MovingPlatform : MonoBehaviour {
 		
 	}
 	
+
+	
 	// Update is called once per frame
 	void Update () {
 		Vector3 loc = this.transform.position;
