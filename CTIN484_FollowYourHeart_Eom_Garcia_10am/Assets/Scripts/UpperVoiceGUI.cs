@@ -71,8 +71,11 @@ public class UpperVoiceGUI : MonoBehaviour
 	
 	void OnGUI()
 	{
+		float myR = myStyle.normal.textColor.r;
+		float myG = myStyle.normal.textColor.g;
+		float myB = myStyle.normal.textColor.b;
 		
-		myStyle.normal.textColor = new Color(1f, 1f, 1f, alpha);
+		myStyle.normal.textColor = new Color(myR, myG, myB, alpha);
 		
 		GUI.Label(new Rect(10, 10, 100, 20), Globals.upperVoice, myStyle);
 	}

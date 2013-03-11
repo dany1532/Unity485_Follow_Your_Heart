@@ -110,7 +110,12 @@ public class LowerVoiceGUI : MonoBehaviour
 	void OnGUI()
 	{
 		//GUI.Label(new Rect(10, 550, 100, 570),lowerVoiceTransition , myStyle);
-		myStyle.normal.textColor = new Color(1f, 1f, 1f, alpha);
+		//myStyle.normal.textColor = new Color(1f, 1f, 1f, alpha);
+		float myR = myStyle.normal.textColor.r;
+		float myG = myStyle.normal.textColor.g;
+		float myB = myStyle.normal.textColor.b;
+		
+		myStyle.normal.textColor = new Color(myR, myG, myB, alpha);
 		
 		GUI.Label(new Rect(10, 550, 100, 570), Globals.lowerVoice, myStyle);
 	}

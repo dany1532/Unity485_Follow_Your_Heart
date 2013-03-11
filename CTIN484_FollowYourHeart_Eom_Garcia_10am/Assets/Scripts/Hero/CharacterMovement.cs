@@ -16,6 +16,7 @@ public class CharacterMovement : MonoBehaviour
 	private float climbSpeed = 6;
 	private float pushingSpeed = 3;
 	public float floatingSpeed = 1;
+	//private float maxJump = 15;
 	
 	public GameObject rockPrefab;
 	
@@ -27,6 +28,9 @@ public class CharacterMovement : MonoBehaviour
 	public bool hasPills = false;
 	public bool nextLevel = false;
 	public bool inCutscene = false;
+	private float lanternOffset = 1.6f;
+	private Transform lantern;
+	public Transform lanternLight;
 	
 	private float ladderPosX;
 	private float ladderPosDiff = 0.2f;	// Maximum distance between ladderPosX and character before clamping character to ladder
@@ -35,6 +39,7 @@ public class CharacterMovement : MonoBehaviour
 	void Start()
 	{
 		state = states.idle;
+		lantern = this.transform.FindChild("Lantern");
 	}
 	
 	void Update()
@@ -64,6 +69,14 @@ public class CharacterMovement : MonoBehaviour
 		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 		{
 			RaycastHit hit;
+			Vector3 loc = lantern.transform.position;
+			loc.x = this.transform.position.x -lanternOffset;
+			lantern.transform.position = loc;
+				
+			loc = lanternLight.transform.position;
+			loc.x = lantern.transform.position.x - lanternOffset;
+			lanternLight.transform.position = loc;
+				
 			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
 			{
 				transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
@@ -71,7 +84,14 @@ public class CharacterMovement : MonoBehaviour
 		}
 		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
 		{
+			Vector3 loc = this.transform.position;
 			RaycastHit hit;
+			loc.x = this.transform.position.x +lanternOffset;
+			lantern.transform.position = loc;
+				
+			loc = lanternLight.transform.position;
+			loc.x = lantern.transform.position.x +lanternOffset;
+			lanternLight.transform.position = loc;
 			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
 			{
 				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
@@ -140,7 +160,7 @@ public class CharacterMovement : MonoBehaviour
 		
 		if(Input.GetKeyDown(KeyCode.F)){
 			Vector3 loc = this.transform.position;
-			loc.x -= 1;
+			loc.x -= 2;
 			Instantiate(rockPrefab,	loc, Quaternion.identity);
 		}
 	  }
@@ -150,6 +170,14 @@ public class CharacterMovement : MonoBehaviour
 	{
 		
 		
+	}
+	
+	public void TurnOnLantern(){
+		Transform myLantern = this.transform.FindChild("Lantern");
+		myLantern.renderer.enabled = true;
+		myLantern.FindChild("Candle_Halo").light.enabled = true;
+		myLantern.FindChild("Candle_Light").light.enabled = true;
+		this.transform.FindChild("Hero_Spotlight").light.enabled = false;
 	}
 	
 	void OnTriggerEnter(Collider collider)
@@ -171,6 +199,13 @@ public class CharacterMovement : MonoBehaviour
 			else if(Input.GetKey(KeyCode.D)){
 				state = states.pushingRight;
 			}
+		}
+		
+		if(collider.gameObject.name == "Death_Fall" ||
+			collider.gameObject.name == "Boulder_Spikes"){
+			Vector3 loc = Globals.currentCheckPoint.transform.position;
+			loc.z = 1.25f;
+			this.transform.position = loc;
 		}
 	}
 	

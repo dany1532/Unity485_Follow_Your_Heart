@@ -2,9 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public class Rock : MonoBehaviour {
-	public float rockSpeed = 20;
+	public float rockSpeed = 40;
 	// Use this for initialization
 	void Start () {
+		Invoke("DestroyMe", 5);
 	}
 	
 	// Update is called once per frame
@@ -17,5 +18,9 @@ public class Rock : MonoBehaviour {
 			Destroy(col.gameObject);
 			Destroy(this.gameObject);
 		}
+	}
+	
+	void DestroyMe(){
+		Destroy(this.gameObject);	
 	}
 }

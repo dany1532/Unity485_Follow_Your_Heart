@@ -10,22 +10,31 @@ public class FadeOutObject : MonoBehaviour {
     private float alfa = 0;
 	private bool start = false;
 	private GameObject player;
+	private string propertyName;
 
     // Use this for initialization
 
     void Start()
     {
-        matCol = transform.parent.renderer.material.color;
+       // matCol = transform.parent.renderer.material.color;
     }
 	
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.tag == "Player"){
 			player = other.gameObject;
 			if(this.gameObject.name == "Mother_T"){
+				matCol = transform.parent.renderer.material.color;
+				propertyName = "_Color";
 				if(Globals.deathMother == true){
 					start = true;	
 					player.GetComponent<CharacterMovement>().inCutscene = true;
 				}	
+			}
+			
+			if(this.gameObject.name == "Lake"){
+				matCol = transform.parent.renderer.material.GetColor("_horizonColor");
+				propertyName = "_horizonColor";
+				start = true;
 			}
 		}
 	}
@@ -37,9 +46,10 @@ public class FadeOutObject : MonoBehaviour {
     {
         if (!isDone && start)
         {
-            alfa = transform.parent.renderer.material.color.a - Time.deltaTime/(fadeSpeed);
+			
+            alfa = transform.parent.renderer.material.GetColor(propertyName).a - Time.deltaTime/(fadeSpeed);
             newColor = new Color(matCol.r, matCol.g, matCol.b, alfa);
-            transform.parent.renderer.material.SetColor("_Color", newColor);
+            transform.parent.renderer.material.SetColor(propertyName, newColor);
 			if(alfa <= 0){
 				isDone = true;
 				player.GetComponent<CharacterMovement>().inCutscene = false;

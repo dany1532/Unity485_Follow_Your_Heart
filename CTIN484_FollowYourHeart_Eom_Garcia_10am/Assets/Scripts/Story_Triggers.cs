@@ -8,6 +8,9 @@ public class Story_Triggers : MonoBehaviour {
 	private StoryEvent myEvent;
 	private bool startCutscene = false;
 	public GameObject rainPrefab;
+	public GameObject lanternPrefab;
+	private CharacterMovement playerScript;
+	private GUIStyle lowerVoiceStyle;
 	
 	void Start(){
 		Transform f = transform.FindChild("Trigger_Location");
@@ -15,6 +18,9 @@ public class Story_Triggers : MonoBehaviour {
 		myId = int.Parse(textMeshChild.text);
 		MeshRenderer rend = textMeshChild.GetComponent<MeshRenderer>();
 		rend.enabled = false;
+		
+		lowerVoiceStyle =GameObject.Find("Environment_Scripts").
+								GetComponent<LowerVoiceGUI>().myStyle;
 		
 	}
 	
@@ -57,14 +63,16 @@ public class Story_Triggers : MonoBehaviour {
 				bool hasPills = other.gameObject.GetComponent<CharacterMovement>().hasPills;
 				if(hasPills){
 					Globals.lowerVoice = "Thank you dear, now go to rest...";
+					other.gameObject.GetComponent<CharacterMovement>().nextLevel = true;
 				}
-				other.gameObject.GetComponent<CharacterMovement>().nextLevel = true;
+				
 			}
 			
 			if(myId == 9){
 				bool nextLevel = other.gameObject.GetComponent<CharacterMovement>().nextLevel;
-				if(nextLevel){
+				if(nextLevel && !startCutscene){
 					other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
+					startCutscene = true;
 					Globals.loadNextLevelTutorial();
 				}
 			}
@@ -106,14 +114,76 @@ public class Story_Triggers : MonoBehaviour {
 			}
 			
 			if(myId == 16){
-				Globals.upperVoice = "I fall...";
-				GameObject.Find("TutorialLight").light.intensity = 0;
-				Globals.loadNextLevelTutorial();
+				if(!startCutscene){
+					startCutscene = true;
+					Globals.upperVoice = "I just gave up...";
+					GameObject.Find("TutorialLight").light.intensity = 0;
+					Globals.loadNextLevelTutorial();
+				}
 			}
 			
+			if(myId == 17){
+				if(!startCutscene){
+					playerScript = other.gameObject.GetComponent<CharacterMovement>();
+					playerScript.inCutscene = true;
+					myEvent = StoryEvent.ev0;
+					InvokeRepeating("StoryEvent17", 0, 5.5f);
+					startCutscene = true;
+				}
+			}
+			
+			if(myId == 18){
+				Globals.upperVoice = "This lantern is all I have left of her...";
+			}
+			
+			if(myId == 19){
+				Globals.upperVoice = "That and what she has taught me...";
+			}
+			
+			if(myId == 20){
+				Globals.upperVoice = "But this world is different...";
+			}
+			
+			if(myId == 21){
+				Globals.upperVoice = "It feels as if it wants me to fail..";
+			}
+			
+			if(myId == 22){
+				lowerVoiceStyle.normal.textColor = Color.magenta;
+				Globals.lowerVoice = "You will fail";
+			}
+			
+			if(myId == 23){
+				lowerVoiceStyle.normal.textColor = Color.magenta;
+				Globals.lowerVoice = "You're nothing";
+			}
+			
+			if(myId == 24){
+				lowerVoiceStyle.normal.textColor = Color.magenta;
+				Globals.lowerVoice = "What do you even hope to accomplish?";
+			}
+			
+			if(myId == 25){
+				lowerVoiceStyle.normal.textColor = Color.magenta;
+				Globals.lowerVoice = "Pitiful";
+			}
+			
+			if(myId == 26){
+				if(!startCutscene){
+					myEvent = StoryEvent.ev0;
+					InvokeRepeating("StoryEvent26", 0, 5.5f);
+					startCutscene = true;
+				}
+			}
+			
+			if(myId == 27){
+				lowerVoiceStyle.normal.textColor = Color.magenta;
+				Globals.lowerVoice = "You will never succeed...";
+			}
 	 }		
 }
 	
+  //Mother's death cutscene
 	void StoryEvent10(){
 		if(myEvent == StoryEvent.ev0){
 			Globals.upperVoice = "But the next day...";
@@ -143,6 +213,71 @@ public class Story_Triggers : MonoBehaviour {
 			Globals.lowerVoice = "Goodbye";
 			myEvent = StoryEvent.ev5;
 		}
+	}
+	
+	void StoryEvent17(){
+		if(myEvent == StoryEvent.ev0){
+			Globals.upperVoice = "It hurts so much...";
+			myEvent = StoryEvent.ev1;
+		}	
+		
+		else if(myEvent == StoryEvent.ev1){
+			Globals.upperVoice = "Maybe if I just lie here...";
+			Globals.lowerVoice = "Why do we fall?";
+			myEvent = StoryEvent.ev2;
+		}
+		
+		else if(myEvent == StoryEvent.ev2){
+			Instantiate(lanternPrefab);
+			Globals.upperVoice = "Is that... my mother's lantern?";
+			myEvent = StoryEvent.ev3;
+		}
+		
+		else if(myEvent == StoryEvent.ev3){
+			Globals.upperVoice = "No, she wouldn't want me to just give up...";
+			playerScript.inCutscene = false;
+			myEvent = StoryEvent.ev4;
+		}
+		
+		
+		
+		/*else if(myEvent == StoryEvent.ev4){
+			Globals.upperVoice = "I have to keep going...";
+			myEvent = StoryEvent.ev5;
+		}*/
+	}
+	
+		void StoryEvent26(){
+		if(myEvent == StoryEvent.ev0){
+			Globals.upperVoice = "This place reminds me of that lake...";
+			myEvent = StoryEvent.ev1;
+		}	
+		
+		else if(myEvent == StoryEvent.ev1){
+			lowerVoiceStyle.normal.textColor = Color.gray;
+			Globals.upperVoice = "We would always go there and throw rocks...";
+			Globals.lowerVoice = "Throw a rock with F";
+			myEvent = StoryEvent.ev2;
+		}
+		
+		else if(myEvent == StoryEvent.ev2){
+			lowerVoiceStyle.normal.textColor = Color.gray;
+			Globals.upperVoice = "She would always tell me...";
+			Globals.lowerVoice = "Throw one whenever you are in doubt";
+			myEvent = StoryEvent.ev3;
+		}
+		
+		/*else if(myEvent == StoryEvent.ev3){
+			Globals.upperVoice = "I should have done something...";
+			Globals.lowerVoice = "I love you so much...";
+			myEvent = StoryEvent.ev4;
+		}
+		
+		else if(myEvent == StoryEvent.ev4){
+			Globals.upperVoice = "But I just stood there...";
+			Globals.lowerVoice = "Goodbye";
+			myEvent = StoryEvent.ev5;
+		} */
 	}
 	
 	void lowerVoiceStory8(){
