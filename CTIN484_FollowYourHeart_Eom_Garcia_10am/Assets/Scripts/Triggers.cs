@@ -32,6 +32,12 @@ public class Triggers : MonoBehaviour
 			this.transform.position = loc;
 		}
 		
+		if(other.gameObject.name == "Spike_Trigger"){
+			Vector3 loc = Globals.currentCheckPoint.transform.position;
+			loc.z = 1.25f;
+			this.transform.position = loc;
+		}
+		
 		
 		/*//Story Events
 		if(other.gameObject.name == "StoryTrigger1")

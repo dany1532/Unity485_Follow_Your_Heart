@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TorchTrigger : MonoBehaviour {
 	public bool active;
-	
+
 	// Use this for initialization
 	void Start () {
 		active = false;
@@ -24,6 +24,8 @@ public class TorchTrigger : MonoBehaviour {
 				brightness.light.range = 10;
 				Globals.currentCheckPoint = this.gameObject;
 			}
+
+			
 			active = true;
 		}
 	}
