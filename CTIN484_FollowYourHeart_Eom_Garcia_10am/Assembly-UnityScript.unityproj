@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{26D72C54-D5EA-74B0-66D8-36705209741D}</ProjectGuid>
+	<ProjectGuid>{CB0E6A79-567D-D3A5-8067-1C36CF721751}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<AssemblyName>Assembly-UnityScript</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,27 +44,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BeginningStory.cs" />
-     <Compile Include="Assets\Scripts\DestructiblePlatform.cs" />
-     <Compile Include="Assets\Scripts\FadeOutObject.cs" />
-     <Compile Include="Assets\Scripts\Globals.cs" />
-     <Compile Include="Assets\Scripts\Hero\CharacterMovement.cs" />
-     <Compile Include="Assets\Scripts\Hero\Death_Animation.cs" />
-     <Compile Include="Assets\Scripts\Hero\Hacks.cs" />
-     <Compile Include="Assets\Scripts\Hero\IsGroundedTrigger.cs" />
-     <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
-     <Compile Include="Assets\Scripts\MovingPlatform.cs" />
-     <Compile Include="Assets\Scripts\Music_Manager.cs" />
-     <Compile Include="Assets\Scripts\PickUp.cs" />
-     <Compile Include="Assets\Scripts\Push_Block.cs" />
-     <Compile Include="Assets\Scripts\RestartLevel.cs" />
-     <Compile Include="Assets\Scripts\Rock.cs" />
-     <Compile Include="Assets\Scripts\Story_Triggers.cs" />
-     <Compile Include="Assets\Scripts\TempTriggerScript.cs" />
-     <Compile Include="Assets\Scripts\TorchTrigger.cs" />
-     <Compile Include="Assets\Scripts\TriggerNumbering.cs" />
-     <Compile Include="Assets\Scripts\Triggers.cs" />
-     <Compile Include="Assets\Scripts\UpperVoiceGUI.cs" />
+     <Compile Include="Assets\RainAssets\scripts\findcollideparticles.js" />
+     <Compile Include="Assets\RainAssets\scripts\rotater.js" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
   </ItemGroup>
   <ItemGroup>

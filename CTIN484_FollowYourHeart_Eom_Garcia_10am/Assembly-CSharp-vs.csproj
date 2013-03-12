@@ -46,14 +46,18 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BeginningStory.cs" />
      <Compile Include="Assets\Scripts\DestructiblePlatform.cs" />
+     <Compile Include="Assets\Scripts\FadeOutObject.cs" />
      <Compile Include="Assets\Scripts\Globals.cs" />
      <Compile Include="Assets\Scripts\Hero\CharacterMovement.cs" />
+     <Compile Include="Assets\Scripts\Hero\Death_Animation.cs" />
      <Compile Include="Assets\Scripts\Hero\Hacks.cs" />
      <Compile Include="Assets\Scripts\Hero\IsGroundedTrigger.cs" />
      <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
      <Compile Include="Assets\Scripts\MovingPlatform.cs" />
      <Compile Include="Assets\Scripts\Music_Manager.cs" />
+     <Compile Include="Assets\Scripts\PickUp.cs" />
      <Compile Include="Assets\Scripts\Push_Block.cs" />
+     <Compile Include="Assets\Scripts\RestartLevel.cs" />
      <Compile Include="Assets\Scripts\Rock.cs" />
      <Compile Include="Assets\Scripts\Story_Triggers.cs" />
      <Compile Include="Assets\Scripts\TempTriggerScript.cs" />
@@ -61,6 +65,11 @@
      <Compile Include="Assets\Scripts\TriggerNumbering.cs" />
      <Compile Include="Assets\Scripts\Triggers.cs" />
      <Compile Include="Assets\Scripts\UpperVoiceGUI.cs" />
+     <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{E91A4256-9D9E-8192-DC60-CA81B5D69143}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
