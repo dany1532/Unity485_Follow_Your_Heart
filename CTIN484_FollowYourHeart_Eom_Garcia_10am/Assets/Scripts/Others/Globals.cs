@@ -3,12 +3,16 @@ using System.Collections;
 
 public class Globals : MonoBehaviour
 {
-		// Voice text globals
+	// Voice text globals
 	public static float textSpeed = 0.025f;
 	public static string upperVoice = "";
 	public static string lowerVoice = "";
 	public static bool deathMother = false;
 	
+	// Hero position
+	public static Vector3 heroPos = Vector3.zero;
+	
+	// Others
 	public static GameObject currentCheckPoint;
 	public Transform vectionCandle;
 	public Transform vbParent;

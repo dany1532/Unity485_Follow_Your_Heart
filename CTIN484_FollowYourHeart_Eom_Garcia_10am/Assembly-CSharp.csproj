@@ -44,27 +44,28 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BeginningStory.cs" />
-     <Compile Include="Assets\Scripts\DestructiblePlatform.cs" />
-     <Compile Include="Assets\Scripts\FadeOutObject.cs" />
-     <Compile Include="Assets\Scripts\Globals.cs" />
+     <Compile Include="Assets\Scripts\Enemies\EnemiesAI.cs" />
      <Compile Include="Assets\Scripts\Hero\CharacterMovement.cs" />
      <Compile Include="Assets\Scripts\Hero\Death_Animation.cs" />
      <Compile Include="Assets\Scripts\Hero\Hacks.cs" />
      <Compile Include="Assets\Scripts\Hero\IsGroundedTrigger.cs" />
-     <Compile Include="Assets\Scripts\LowerVoiceGUI.cs" />
-     <Compile Include="Assets\Scripts\MovingPlatform.cs" />
-     <Compile Include="Assets\Scripts\Music_Manager.cs" />
-     <Compile Include="Assets\Scripts\PickUp.cs" />
-     <Compile Include="Assets\Scripts\Push_Block.cs" />
-     <Compile Include="Assets\Scripts\RestartLevel.cs" />
-     <Compile Include="Assets\Scripts\Rock.cs" />
-     <Compile Include="Assets\Scripts\Story_Triggers.cs" />
-     <Compile Include="Assets\Scripts\TempTriggerScript.cs" />
-     <Compile Include="Assets\Scripts\TorchTrigger.cs" />
-     <Compile Include="Assets\Scripts\TriggerNumbering.cs" />
-     <Compile Include="Assets\Scripts\Triggers.cs" />
-     <Compile Include="Assets\Scripts\UpperVoiceGUI.cs" />
+     <Compile Include="Assets\Scripts\Others\BeginningStory.cs" />
+     <Compile Include="Assets\Scripts\Others\DestructiblePlatform.cs" />
+     <Compile Include="Assets\Scripts\Others\FadeOutObject.cs" />
+     <Compile Include="Assets\Scripts\Others\Globals.cs" />
+     <Compile Include="Assets\Scripts\Others\LowerVoiceGUI.cs" />
+     <Compile Include="Assets\Scripts\Others\MovingPlatform.cs" />
+     <Compile Include="Assets\Scripts\Others\Music_Manager.cs" />
+     <Compile Include="Assets\Scripts\Others\PickUp.cs" />
+     <Compile Include="Assets\Scripts\Others\Push_Block.cs" />
+     <Compile Include="Assets\Scripts\Others\RestartLevel.cs" />
+     <Compile Include="Assets\Scripts\Others\Rock.cs" />
+     <Compile Include="Assets\Scripts\Others\Story_Triggers.cs" />
+     <Compile Include="Assets\Scripts\Others\TempTriggerScript.cs" />
+     <Compile Include="Assets\Scripts\Others\TorchTrigger.cs" />
+     <Compile Include="Assets\Scripts\Others\TriggerNumbering.cs" />
+     <Compile Include="Assets\Scripts\Others\Triggers.cs" />
+     <Compile Include="Assets\Scripts\Others\UpperVoiceGUI.cs" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
   </ItemGroup>
   <ItemGroup>
