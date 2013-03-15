@@ -16,7 +16,11 @@ public class CharacterMovement : MonoBehaviour
 	private float climbSpeed = 6;
 	private float pushingSpeed = 3;
 	public float floatingSpeed = 1;
-	//private float maxJump = 15;
+	
+	// mario jump
+	private float extendedJumpPeriod = 0.3f;	// the extra time a player may hold the jump button to get an extended jump
+	private float extendedJumpAlarm;			// the time at which the player no longer gets extended jump power
+	private float extendedJumpVelocity = 25f;
 	
 	public GameObject rockPrefab;
 	
@@ -47,7 +51,36 @@ public class CharacterMovement : MonoBehaviour
 	
 	void Update()
 	{
-	  if(!inCutscene){	
+	  if(!inCutscene){
+			// Jumping
+			if(Input.GetKeyDown(KeyCode.Space) && isGrounded)				// standard jump
+			{
+				state = states.jump;
+				extendedJumpAlarm = Time.time + extendedJumpPeriod;
+				rigidbody.velocity = Vector3.up * jumpSpeed;
+			}
+			if(Input.GetKeyDown(KeyCode.Space) && state == states.climb)	// jumping off a ladder
+			{
+				if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+				{
+					state = states.jump;
+					rigidbody.velocity = Vector3.up * jumpSpeed;
+				}
+				else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+				{
+					state = states.jump;
+					rigidbody.velocity = Vector3.up * jumpSpeed;
+				}
+			}
+			if(Input.GetKey(KeyCode.Space))									// mario jump extension
+			{
+				if(Time.time < extendedJumpAlarm)
+				{
+					print ("hello");
+					rigidbody.velocity += Vector3.up * extendedJumpVelocity * Time.deltaTime;
+				}
+			}
+			/*
 		// Jumping
 		if(Input.GetKeyDown(KeyCode.Space) && isGrounded && !landing)
 		{
@@ -68,6 +101,8 @@ public class CharacterMovement : MonoBehaviour
 				rigidbody.velocity = Vector3.up * jumpSpeed;
 			}
 		}
+		*/
+			
 		// Horizontal movement
 			//Move Left
 		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
