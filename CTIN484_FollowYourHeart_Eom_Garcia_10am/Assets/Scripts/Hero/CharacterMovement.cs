@@ -20,7 +20,8 @@ public class CharacterMovement : MonoBehaviour
 	
 	public GameObject rockPrefab;
 	
-	public enum states {idle, walk, climb, jump, floating, pushingRight, pushingLeft};
+	public enum states {idleLeft, idleRight, walkLeft, walkRight, climb, jump,
+				 falling, floating, pushingRight, pushingLeft};
 	public states state;
 	public bool isGrounded;
 	public bool canClimb;
@@ -28,30 +29,33 @@ public class CharacterMovement : MonoBehaviour
 	public bool hasPills = false;
 	public bool nextLevel = false;
 	public bool inCutscene = false;
-	private float lanternOffset = 1.6f;
-	private Transform lantern;
-	public Transform lanternLight;
+	public bool landing = false;
+	
 	
 	private float ladderPosX;
 	private float ladderPosDiff = 0.2f;	// Maximum distance between ladderPosX and character before clamping character to ladder
 	private float ladderPosAdd = 1f;	// Adding a length to the left or right of ladderPosX to distinguish player to the left or right 
 	
+	
+	
 	void Start()
 	{
-		state = states.idle;
-		lantern = this.transform.FindChild("Lantern");
+		state = states.idleLeft;
+		
+		
 	}
 	
 	void Update()
 	{
 	  if(!inCutscene){	
 		// Jumping
-		if(Input.GetKey(KeyCode.Space) && isGrounded)
+		if(Input.GetKeyDown(KeyCode.Space) && isGrounded && !landing)
 		{
 			state = states.jump;
 			rigidbody.velocity = Vector3.up * jumpSpeed;
+				
 		}
-		if(Input.GetKey(KeyCode.Space) && state == states.climb)
+		if(Input.GetKeyDown(KeyCode.Space) && state == states.climb)
 		{
 			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 			{
@@ -64,38 +68,48 @@ public class CharacterMovement : MonoBehaviour
 				rigidbody.velocity = Vector3.up * jumpSpeed;
 			}
 		}
-		
 		// Horizontal movement
+			//Move Left
 		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 		{
 			RaycastHit hit;
-			Vector3 loc = lantern.transform.position;
-			loc.x = this.transform.position.x -lanternOffset;
-			lantern.transform.position = loc;
-				
-			loc = lanternLight.transform.position;
-			loc.x = lantern.transform.position.x - lanternOffset;
-			lanternLight.transform.position = loc;
+			
 				
 			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
 			{
 				transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
 			}
+			
+			if(state != states.jump && !landing){
+					state = states.walkLeft;	
+			}
+			else
+					state = states.jump;
+
 		}
 		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
 		{
-			Vector3 loc = this.transform.position;
+			
 			RaycastHit hit;
-			loc.x = this.transform.position.x +lanternOffset;
-			lantern.transform.position = loc;
-				
-			loc = lanternLight.transform.position;
-			loc.x = lantern.transform.position.x +lanternOffset;
-			lanternLight.transform.position = loc;
+			
 			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
 			{
 				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
 			}
+				
+			if(state != states.jump && !landing){
+					state = states.walkRight;	
+			}
+			else
+					state = states.jump;
+		}
+			
+		else if (isGrounded){
+			if(Input.GetKeyUp(KeyCode.A))
+				state = states.idleLeft;
+			else if(Input.GetKeyUp(KeyCode.D))
+				state = states.idleRight;
+				
 		}
 		
 		// Ladder climbing
@@ -174,10 +188,10 @@ public class CharacterMovement : MonoBehaviour
 	
 	public void TurnOnLantern(){
 		Transform myLantern = this.transform.FindChild("Lantern");
-		myLantern.renderer.enabled = true;
-		myLantern.FindChild("Candle_Halo").light.enabled = true;
+		//myLantern.renderer.enabled = true;
+		//myLantern.FindChild("Candle_Halo").light.enabled = true;
 		myLantern.FindChild("Candle_Light").light.enabled = true;
-		this.transform.FindChild("Hero_Spotlight").light.enabled = false;
+		//this.transform.FindChild("Hero_Spotlight").light.enabled = false;
 	}
 	
 	void OnTriggerEnter(Collider collider)
@@ -209,6 +223,8 @@ public class CharacterMovement : MonoBehaviour
 		}
 	}
 	
+	
+	
 	void OnTriggerExit(Collider collider)
 	{
 		if(collider.tag == "Ladder")
@@ -222,7 +238,7 @@ public class CharacterMovement : MonoBehaviour
 		}
 		
 		if(collider.tag == "Push_Block"){
-			state = states.idle;
+			state = states.idleLeft;
 		}
 	}
 }

@@ -5,6 +5,8 @@ Project("{C88CE189-29C4-90CF-E274-2EAB19897F5A}") = "CTIN484_FollowYourHeart_Eom
 EndProject
 Project("{C88CE189-29C4-90CF-E274-2EAB19897F5A}") = "CTIN484_FollowYourHeart_Eom_Garcia_10am", "Assembly-CSharp-vs.csproj", "{26D72C54-D5EA-74B0-66D8-36705209741D}"
 EndProject
+Project("{C88CE189-29C4-90CF-E274-2EAB19897F5A}") = "CTIN484_FollowYourHeart_Eom_Garcia_10am", "Assembly-CSharp-Editor-vs.csproj", "{A0A3B067-EB92-8F4C-FEE3-41C48E0A9C4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +21,15 @@ Global
 		{26D72C54-D5EA-74B0-66D8-36705209741D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26D72C54-D5EA-74B0-66D8-36705209741D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26D72C54-D5EA-74B0-66D8-36705209741D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A3B067-EB92-8F4C-FEE3-41C48E0A9C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A3B067-EB92-8F4C-FEE3-41C48E0A9C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A3B067-EB92-8F4C-FEE3-41C48E0A9C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A3B067-EB92-8F4C-FEE3-41C48E0A9C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																											GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																							GlobalSection(MonoDevelopProperties) = preSolution
 																																																																							GlobalSection(MonoDevelopProperties) = preSolution
 																																															GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj

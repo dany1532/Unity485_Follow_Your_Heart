@@ -1,17 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\RestartLevel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ProtagonistAnimation.cs">
     <Files>
       <File FileName="Assets\Scripts\Story_Triggers.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\PickUp.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FadeOutObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="191" Column="5" />
       <File FileName="Assets\Scripts\Globals.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Hero\IsGroundedTrigger.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\TorchTrigger.cs" Line="6" Column="1" />
-      <File FileName="Assets\Scripts\RestartLevel.cs" Line="18" Column="26" />
-      <File FileName="Assets\Scripts\Triggers.cs" Line="39" Column="4" />
-      <File FileName="Assets\Scripts\Hero\Death_Animation.cs" Line="5" Column="33" />
+      <File FileName="Assets\Scripts\Hero\IsGroundedTrigger.cs" Line="28" Column="4" />
+      <File FileName="Assets\Scripts\ProtagonistAnimation.cs" Line="17" Column="4" />
+      <File FileName="Assets\Scripts\Triggers.cs" Line="36" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

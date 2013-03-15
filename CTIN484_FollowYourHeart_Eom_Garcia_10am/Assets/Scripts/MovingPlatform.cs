@@ -27,12 +27,12 @@ public class MovingPlatform : MonoBehaviour {
 			desiredPosition = loc.x + traversalDistance;	
 	}
 	
-	void OnCollisionEnter ()
+	void OnTriggerEnter (Collider col)
 	{
 		if(isDestructible){
 			platState = TraversalState.right;
 			getDesiredPosition();
-			Invoke("fall",2f);
+			Invoke("fall",1f);
 		}
 	}
 	

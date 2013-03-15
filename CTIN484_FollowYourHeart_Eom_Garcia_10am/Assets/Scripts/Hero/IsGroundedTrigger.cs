@@ -4,11 +4,14 @@ using System.Collections;
 public class IsGroundedTrigger : MonoBehaviour {
 	
 	CharacterMovement charMovement;
+	public ProtagonistAnimation anim;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		charMovement = transform.parent.GetComponent<CharacterMovement>();
+		anim = transform.parent.GetComponent<ProtagonistAnimation>();
+		
 	}
 	
 	// Update is called once per frame
@@ -22,7 +25,10 @@ public class IsGroundedTrigger : MonoBehaviour {
 		if(other.tag == "Ground")
 		{
 			charMovement.isGrounded = true;
-			charMovement.state = CharacterMovement.states.idle;
+			charMovement.landing = true;
+			anim.sJump = ProtagonistAnimation.StateJump.landing;
+			//charMovement.state = CharacterMovement.states.idleLeft;
+			
 		}
 	}
 	
