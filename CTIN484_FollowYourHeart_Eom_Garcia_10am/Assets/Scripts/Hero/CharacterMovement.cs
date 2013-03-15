@@ -18,6 +18,11 @@ public class CharacterMovement : MonoBehaviour
 	public float floatingSpeed = 1;
 	//private float maxJump = 15;
 	
+	// mario jump
+	private float extendedJumpPeriod = 0.3f;	// the extra time a player may hold the jump button to get an extended jump
+	private float extendedJumpAlarm;			// the time at which the player no longer gets extended jump power
+	private float extendedJumpVelocity = 25f;
+	
 	public GameObject rockPrefab;
 	
 	public enum states {idleLeft, idleRight, walkLeft, walkRight, climb, jump,
@@ -47,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
 	
 	void Update()
 	{
+<<<<<<< HEAD
 	  if(!inCutscene){	
 		// Jumping
 		if(Input.GetKeyDown(KeyCode.Space) && isGrounded && !landing)
@@ -56,17 +62,21 @@ public class CharacterMovement : MonoBehaviour
 				
 		}
 		if(Input.GetKeyDown(KeyCode.Space) && state == states.climb)
+=======
+		if(!inCutscene)
+>>>>>>> e52238a92abd03088ead27fc0160691c1d54e28c
 		{
-			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+			// Hero position
+			Globals.heroPos = transform.position;
+				
+			// Jumping
+			if(Input.GetKeyDown(KeyCode.Space) && isGrounded)				// standard jump
 			{
 				state = states.jump;
+				extendedJumpAlarm = Time.time + extendedJumpPeriod;
 				rigidbody.velocity = Vector3.up * jumpSpeed;
 			}
-			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-			{
-				state = states.jump;
-				rigidbody.velocity = Vector3.up * jumpSpeed;
-			}
+<<<<<<< HEAD
 		}
 		// Horizontal movement
 			//Move Left
@@ -93,9 +103,22 @@ public class CharacterMovement : MonoBehaviour
 			RaycastHit hit;
 			
 			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+=======
+			if(Input.GetKeyDown(KeyCode.Space) && state == states.climb)	// jumping off a ladder
+>>>>>>> e52238a92abd03088ead27fc0160691c1d54e28c
 			{
-				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+				if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+				{
+					state = states.jump;
+					rigidbody.velocity = Vector3.up * jumpSpeed;
+				}
+				else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+				{
+					state = states.jump;
+					rigidbody.velocity = Vector3.up * jumpSpeed;
+				}
 			}
+<<<<<<< HEAD
 				
 			if(state != states.jump && !landing){
 					state = states.walkRight;	
@@ -116,68 +139,116 @@ public class CharacterMovement : MonoBehaviour
 		if(canClimb)
 		{
 			if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
+=======
+			if(Input.GetKey(KeyCode.Space))									// mario jump extension
+>>>>>>> e52238a92abd03088ead27fc0160691c1d54e28c
 			{
-				if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+				if(Time.time < extendedJumpAlarm)
 				{
-					state = states.climb;
-					rigidbody.useGravity = false;
-					rigidbody.velocity = Vector3.zero;
-					transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
-				}
-				else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
-				{
-					state = states.climb;
-					rigidbody.useGravity = false;
-					rigidbody.velocity = Vector3.zero;
-					transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+					print ("hello");
+					rigidbody.velocity += Vector3.up * extendedJumpVelocity * Time.deltaTime;
 				}
 			}
-			if(state == states.climb)
+			
+			// Horizontal movement
+			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 			{
-				transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
+				RaycastHit hit;
+				Vector3 loc = lantern.transform.position;
+				loc.x = this.transform.position.x -lanternOffset;
+				lantern.transform.position = loc;
+					
+				loc = lanternLight.transform.position;
+				loc.x = lantern.transform.position.x - lanternOffset;
+				lanternLight.transform.position = loc;
+					
+				if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+				{
+					transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+				}
+			}
+			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+			{
+				Vector3 loc = this.transform.position;
+				RaycastHit hit;
+				loc.x = this.transform.position.x +lanternOffset;
+				lantern.transform.position = loc;
+					
+				loc = lanternLight.transform.position;
+				loc.x = lantern.transform.position.x +lanternOffset;
+				lanternLight.transform.position = loc;
+				if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+				{
+					transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+				}
+			}
+			
+			// Ladder climbing
+			if(canClimb)
+			{
+				if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
+				{
+					if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+					{
+						state = states.climb;
+						rigidbody.useGravity = false;
+						rigidbody.velocity = Vector3.zero;
+						transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+					}
+					else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+					{
+						state = states.climb;
+						rigidbody.useGravity = false;
+						rigidbody.velocity = Vector3.zero;
+						transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+					}
+				}
+				if(state == states.climb)
+				{
+					transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
+				}
+			}
+			
+			// Floating
+			if(Input.GetKeyDown(KeyCode.E) && !isGrounded)	// toggle floating while in air
+			{
+				if(state != states.floating)
+				{
+					state = states.floating;
+				}
+				else
+				{
+					state = states.jump;
+				}
+			}
+			if(state == states.floating)
+			{
+				if(rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
+				{
+				rigidbody.useGravity = false;
+				rigidbody.velocity = new Vector3(0,-floatingSpeed,0);
+				}
+				else
+				{
+				rigidbody.useGravity = true;
+				}
+			}
+			
+			// Switches
+			if(nearSwitch)
+			{
+				if (Input.GetKeyDown (KeyCode.S))
+				{
+					print ("Switch activated!");
+				}
+			}
+			
+			if(Input.GetKeyDown(KeyCode.F)){
+				Vector3 loc = this.transform.position;
+				loc.x -= 2;
+				Instantiate(rockPrefab,	loc, Quaternion.identity);
 			}
 		}
-		
-		// Floating
-		if(Input.GetKeyDown(KeyCode.E) && !isGrounded)	// toggle floating while in air
-		{
-			if(state != states.floating)
-			{
-				state = states.floating;
-			}
-			else
-			{
-				state = states.jump;
-			}
-		}
-		if(state == states.floating)
-		{
-			if(rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
-			{
-			rigidbody.useGravity = false;
-			rigidbody.velocity = new Vector3(0,-floatingSpeed,0);
-			}
-			else
-			{
-			rigidbody.useGravity = true;
-			}
-		}
-		
-		// Switches
-		if(nearSwitch)
-		{
-			if (Input.GetKeyDown (KeyCode.S))
-			{
-				print ("Switch activated!");
-			}
-		}
-		
-		if(Input.GetKeyDown(KeyCode.F)){
-			Vector3 loc = this.transform.position;
-			loc.x -= 2;
-			Instantiate(rockPrefab,	loc, Quaternion.identity);
-		}
-	  }
 	}
 	
 	void OnCollisionEnter()
