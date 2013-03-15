@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Others\Story_Triggers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Others\RestartLevel.cs">
     <Files>
       <File FileName="Assets\Scripts\Others\Story_Triggers.cs" Line="22" Column="1" />
+      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="178" Column="1" />
+      <File FileName="Assets\Scripts\Others\RestartLevel.cs" Line="19" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
