@@ -20,7 +20,7 @@ public class FadeOutObject : MonoBehaviour {
     }
 	
 	void OnTriggerEnter(Collider other){
-		if(other.gameObject.tag == "Player"){
+		if(other.gameObject.name == "_Hero"){
 			player = other.gameObject;
 			if(this.gameObject.name == "Mother_T"){
 				matCol = transform.parent.renderer.material.color;

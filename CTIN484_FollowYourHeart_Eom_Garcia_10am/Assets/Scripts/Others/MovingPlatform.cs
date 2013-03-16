@@ -9,6 +9,7 @@ public class MovingPlatform : MonoBehaviour {
 	public enum TraversalState{up, down, right, left, stop};
 	public TraversalState platState = TraversalState.up;
 	public TraversalState pastState = TraversalState.stop;
+	private CharacterMovement theHero = null;
 	public bool isDestructible = false;
 	
 	// Use this for initialization
@@ -25,14 +26,34 @@ public class MovingPlatform : MonoBehaviour {
 		
 		if(platState == TraversalState.right)
 			desiredPosition = loc.x + traversalDistance;	
+		
+		if(platState == TraversalState.down)
+			desiredPosition = loc.y - traversalDistance;
 	}
 	
 	void OnTriggerEnter (Collider col)
 	{
-		if(isDestructible){
-			platState = TraversalState.right;
-			getDesiredPosition();
-			Invoke("fall",1f);
+		if(col.gameObject.tag == "Player"){
+			if(isDestructible){
+				platState = TraversalState.right;
+				getDesiredPosition();
+				Invoke("fall",1f);
+			}
+			
+			else if(this.gameObject.name == "Moving_Platform_Sides" ||
+					 this.gameObject.name == "Moving_Platform_Upward"){
+				theHero = col.transform.parent.gameObject.GetComponent<CharacterMovement>();	
+			}
+		}
+	}
+	
+	void OnTriggerExit(Collider col){
+		if(!isDestructible && this.gameObject.name == "Moving_Platform_Sides" ||
+				 this.gameObject.name == "Moving_Platform_Upward"){
+
+			theHero.NewPlatformSpeedX(0f, false);
+			//theHero.NewPlatformSpeedY(0f, false);
+			theHero = null;
 		}
 	}
 	
@@ -85,6 +106,26 @@ public class MovingPlatform : MonoBehaviour {
 				platState = TraversalState.stop;
 				pastState = TraversalState.left;
 				Invoke("continueMoving", stopTime);
+			}
+		}
+		
+		if(theHero != null){
+			if(platState == TraversalState.right)
+				theHero.NewPlatformSpeedX(movementSpeed, true);
+				
+			else if(platState == TraversalState.up)
+				theHero.NewPlatformSpeedY(movementSpeed, true);
+			
+			else if(platState == TraversalState.left)
+				theHero.NewPlatformSpeedX(movementSpeed, false);
+			
+			else if(platState == TraversalState.down){
+				theHero.NewPlatformSpeedY(movementSpeed, false);
+			}
+			
+			else if(platState == TraversalState.stop){
+				theHero.NewPlatformSpeedX(0f, false);
+				theHero.NewPlatformSpeedY(0f, false);
 			}
 		}
 	}

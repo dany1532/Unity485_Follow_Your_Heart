@@ -6,10 +6,12 @@ public class BeginningStory : MonoBehaviour {
 	public StoryEvent myEvent;
 	public int nextEventSeconds = 3;
 	public Font myFont;
+	private Music_Manager mng;
 	
 	// Use this for initialization
 	void Start () {
 		myEvent = StoryEvent.ev0;
+		mng = GameObject.Find("Music_Manager").GetComponent<Music_Manager>();
 		//DontDestroyOnLoad (transform.gameObject);
 		
 	}
@@ -87,6 +89,7 @@ public class BeginningStory : MonoBehaviour {
 	private void event7(){
 		//GameObject g = GameObject.Find("Environment_Scripts");
 		//Destroy(g);
+		mng.playHome();
 		Application.LoadLevel(1);	
 	}
 	

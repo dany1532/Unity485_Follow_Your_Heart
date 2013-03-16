@@ -16,6 +16,9 @@ public class UpperVoiceGUI : MonoBehaviour
 	public float freezeDuration = 3;		// The amount of time that text is shown at alpha = 1
 	float alpha;							// text color alpha in RGBA
 	float previousTime;						// last recorded time, to measure delta time
+	private float myLeft = 10;
+	private float myTop = 10;
+	
 	
 	public enum states { fadeIn, fadeOut, freezeText, doNothing };
 	public states state;
@@ -24,6 +27,14 @@ public class UpperVoiceGUI : MonoBehaviour
 	{
 		state = states.doNothing;
 		alpha = 0f;
+	}
+	
+	public void setMyLeft(float newLeft){
+		myLeft = newLeft;	
+	}
+	
+	public void setMyTop(float newTop){
+		myTop = newTop;	
 	}
 	
 	void Update()
@@ -77,6 +88,6 @@ public class UpperVoiceGUI : MonoBehaviour
 		
 		myStyle.normal.textColor = new Color(myR, myG, myB, alpha);
 		
-		GUI.Label(new Rect(10, 10, 100, 20), Globals.upperVoice, myStyle);
+		GUI.Label(new Rect(myLeft, myTop, 100, 20), Globals.upperVoice, myStyle);
 	}
 }

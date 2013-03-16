@@ -3,14 +3,20 @@ using System.Collections;
 
 public class Rock : MonoBehaviour {
 	public float rockSpeed = 40;
+	private bool isLeft = true;
 	// Use this for initialization
 	void Start () {
+		isLeft = GameObject.Find("_Hero").GetComponent<CharacterMovement>().
+														   isRockGoingLeft();
 		Invoke("DestroyMe", 5);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Translate(Vector3.left * Time.deltaTime * rockSpeed);
+		if(isLeft)
+			transform.Translate(Vector3.left * Time.deltaTime * rockSpeed);
+		else
+			transform.Translate(Vector3.right * Time.deltaTime * rockSpeed);
 	}
 	
 	void OnTriggerEnter(Collider col){
@@ -20,6 +26,9 @@ public class Rock : MonoBehaviour {
 		}
 	}
 	
+	public void setRockDirection(bool checkLeft){
+		isLeft = checkLeft;	
+	}
 	void DestroyMe(){
 		Destroy(this.gameObject);	
 	}

@@ -12,15 +12,19 @@ using System.Collections;
 public class CharacterMovement : MonoBehaviour
 {
 	public float walkSpeed = 6;
-	private float jumpSpeed = 15;
+	public float jumpSpeed = 15;
 	private float climbSpeed = 6;
 	private float pushingSpeed = 3;
 	public float floatingSpeed = 1;
+	public float platformSpeedX = 0f;
+	public float platformSpeedY = 0f;
+	private bool isPlatformSpeedPositive = false;
+	public bool canFloat = false;
 	
 	// mario jump
-	private float extendedJumpPeriod = 0.3f;	// the extra time a player may hold the jump button to get an extended jump
+	public float extendedJumpPeriod = 0.3f;	// the extra time a player may hold the jump button to get an extended jump
 	private float extendedJumpAlarm;			// the time at which the player no longer gets extended jump power
-	private float extendedJumpVelocity = 25f;
+	public float extendedJumpVelocity = 2f;
 	
 	public GameObject rockPrefab;
 	
@@ -28,16 +32,18 @@ public class CharacterMovement : MonoBehaviour
 				 falling, floating, pushingRight, pushingLeft};
 	public states state;
 	public bool isGrounded;
+	private bool isFloating;
 	public bool canClimb;
 	public bool nearSwitch;
 	public bool hasPills = false;
 	public bool nextLevel = false;
 	public bool inCutscene = false;
 	public bool landing = false;
+	private bool isRockLeft = false;
 	
 	
 	private float ladderPosX;
-	private float ladderPosDiff = 0.2f;	// Maximum distance between ladderPosX and character before clamping character to ladder
+	private float ladderPosDiff = 1f;	// Maximum distance between ladderPosX and character before clamping character to ladder
 	private float ladderPosAdd = 1f;	// Adding a length to the left or right of ladderPosX to distinguish player to the left or right 
 	
 	
@@ -55,6 +61,7 @@ public class CharacterMovement : MonoBehaviour
 			// Jumping
 			if(Input.GetKeyDown(KeyCode.Space) && isGrounded)				// standard jump
 			{
+				
 				state = states.jump;
 				extendedJumpAlarm = Time.time + extendedJumpPeriod;
 				rigidbody.velocity = Vector3.up * jumpSpeed;
@@ -76,7 +83,7 @@ public class CharacterMovement : MonoBehaviour
 			{
 				if(Time.time < extendedJumpAlarm)
 				{
-					print ("hello");
+					rigidbody.useGravity = true;
 					rigidbody.velocity += Vector3.up * extendedJumpVelocity * Time.deltaTime;
 				}
 			}
@@ -105,114 +112,142 @@ public class CharacterMovement : MonoBehaviour
 			
 		// Horizontal movement
 			//Move Left
-		if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-		{
-			RaycastHit hit;
-			
-				
-			if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 			{
-				transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+				RaycastHit hit;
+				
+				isRockLeft = true;
+	
+				if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+				{
+					transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+				}
+				
+				if(state != states.jump && !landing && state != states.floating 
+												&& state != states.climb){
+						state = states.walkLeft;	
+				}
+				else
+						state = states.jump;
+	
 			}
-			
-			if(state != states.jump && !landing){
-					state = states.walkLeft;	
-			}
-			else
-					state = states.jump;
-
-		}
-		else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-		{
-			
-			RaycastHit hit;
-			
-			if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
 			{
-				transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+				
+				RaycastHit hit;
+				isRockLeft = false;
+				if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+				{
+					transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+				}
+					
+				if(state != states.jump && !landing && state != states.floating
+														&& state != states.climb){
+						state = states.walkRight;	
+				}
+				else
+						state = states.jump;
 			}
 				
-			if(state != states.jump && !landing){
-					state = states.walkRight;	
+			else if (isGrounded){
+				if(Input.GetKeyUp(KeyCode.A))
+					state = states.idleLeft;
+				else if(Input.GetKeyUp(KeyCode.D))
+					state = states.idleRight;
+					
 			}
-			else
-					state = states.jump;
-		}
 			
-		else if (isGrounded){
-			if(Input.GetKeyUp(KeyCode.A))
-				state = states.idleLeft;
-			else if(Input.GetKeyUp(KeyCode.D))
-				state = states.idleRight;
+		//Platform Translation
+			
+			if(state != states.jump){
+				if(isPlatformSpeedPositive ){
+					transform.Translate (Vector3.right * Time.deltaTime * platformSpeedX );
+					transform.Translate (Vector3.up * Time.deltaTime * platformSpeedY);
+				}
 				
-		}
+				else if(!isPlatformSpeedPositive ){
+					transform.Translate (Vector3.left * Time.deltaTime * platformSpeedX );
+					transform.Translate (Vector3.down * Time.deltaTime * platformSpeedY);
+				}
+			}
+			else{
+				platformSpeedX = 0f;
+				platformSpeedY = 0f;
+			}
 		
 		// Ladder climbing
-		if(canClimb)
-		{
-			if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
+			if(canClimb)
 			{
-				if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+				if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
 				{
-					state = states.climb;
-					rigidbody.useGravity = false;
-					rigidbody.velocity = Vector3.zero;
-					transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+					if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+					{
+						state = states.climb;
+						rigidbody.useGravity = false;
+						rigidbody.velocity = Vector3.zero;
+						transform.Translate (Vector3.up * Time.deltaTime * climbSpeed);
+					}
+					else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+					{
+						state = states.climb;
+						rigidbody.useGravity = false;
+						rigidbody.velocity = Vector3.zero;
+						transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+					}
 				}
-				else if(Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+				if(state == states.climb)
 				{
-					state = states.climb;
-					rigidbody.useGravity = false;
-					rigidbody.velocity = Vector3.zero;
-					transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
+					transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
 				}
 			}
-			if(state == states.climb)
-			{
-				transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
-			}
-		}
 		
 		// Floating
-		if(Input.GetKeyDown(KeyCode.E) && !isGrounded)	// toggle floating while in air
-		{
-			if(state != states.floating)
+			if(Input.GetKeyDown(KeyCode.E) && !isGrounded && canFloat)	// toggle floating while in air
 			{
-				state = states.floating;
+				if(!isFloating)
+				{
+					state = states.floating;
+					isFloating = true;
+				}
+				else
+				{
+					state = states.jump;
+				}
 			}
-			else
+			if(isFloating)
 			{
-				state = states.jump;
+				//if(rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
+				if(!isGrounded)
+				{
+					rigidbody.useGravity = false;
+					rigidbody.velocity = new Vector3(0,-floatingSpeed,0);
+				}
+				else
+				{
+					rigidbody.useGravity = true;
+					isFloating = false;
+				}
 			}
-		}
-		if(state == states.floating)
-		{
-			if(rigidbody.velocity.y < 0)	// turn gravity off and use floatingSpeed when state = float and is falling
-			{
-			rigidbody.useGravity = false;
-			rigidbody.velocity = new Vector3(0,-floatingSpeed,0);
-			}
-			else
-			{
-			rigidbody.useGravity = true;
-			}
-		}
 		
 		// Switches
-		if(nearSwitch)
-		{
-			if (Input.GetKeyDown (KeyCode.S))
+			if(nearSwitch)
 			{
-				print ("Switch activated!");
+				if (Input.GetKeyDown (KeyCode.S))
+				{
+					print ("Switch activated!");
+				}
 			}
-		}
+			
 		
-		if(Input.GetKeyDown(KeyCode.F)){
-			Vector3 loc = this.transform.position;
-			loc.x -= 2;
-			Instantiate(rockPrefab,	loc, Quaternion.identity);
-		}
-	  }
+			if(Input.GetKeyDown(KeyCode.F)){
+				Vector3 loc = this.transform.position;
+				if(isRockLeft)
+					loc.x -= 2;
+				else
+					loc.x += 2;
+				Instantiate(rockPrefab,	loc, Quaternion.identity);
+			}
+	  	}
 	}
 	
 	void OnCollisionEnter()
@@ -221,6 +256,9 @@ public class CharacterMovement : MonoBehaviour
 		
 	}
 	
+	public bool isRockGoingLeft(){
+		return isRockLeft;
+	}
 	public void TurnOnLantern(){
 		Transform myLantern = this.transform.FindChild("Lantern");
 		//myLantern.renderer.enabled = true;
@@ -250,14 +288,27 @@ public class CharacterMovement : MonoBehaviour
 			}
 		}
 		
-		if(collider.gameObject.name == "Death_Fall" ||
+		/*if(collider.gameObject.name == "Death_Fall" ||
 			collider.gameObject.name == "Boulder_Spikes"){
 			Vector3 loc = Globals.currentCheckPoint.transform.position;
 			loc.z = 1.25f;
 			this.transform.position = loc;
-		}
+		} */
 	}
 	
+	public void NewPlatformSpeedX(float newSpeed, bool isPositive){
+		platformSpeedX = newSpeed;
+		isPlatformSpeedPositive = isPositive;
+	}
+	
+	public void NewPlatformSpeedY(float newSpeed, bool isPositive){
+		platformSpeedY = newSpeed;
+		isPlatformSpeedPositive = isPositive;
+	}
+	
+	public void turnOnFloating(){
+		canFloat = true;	
+	}
 	
 	
 	void OnTriggerExit(Collider collider)

@@ -19,24 +19,31 @@ public class Globals : MonoBehaviour
 	public Transform candlePrefab;
 	public Transform rainPrefab;
 	public GameObject tutorialLight;
-	private static int currentLevel = 0;
+	private static int currentLevel = 1;
 	private static bool fadeLight = false;
 	public int fadeSpeed = 3;
 	
 	void Awake() {
-		vbParent = (new GameObject()).transform;
-		vbParent.position = GameObject.Find("_Hero").transform.position;
-		vbParent.gameObject.name = "Candle";
-		for (int i=0; i<100; i++) {
-			Vector3 pos = new Vector3(Random.value *+720,Random.value*100 - 40, Random.value*200 + 10);
-			Transform vb = Instantiate(vectionCandle, pos, Quaternion.identity) as Transform;
-			vb.parent = vbParent;
+		if(GameObject.Find("_Hero") != null){
+			vbParent = (new GameObject()).transform;
+			vbParent.position = GameObject.Find("_Hero").transform.position;
+			vbParent.gameObject.name = "Candle";
+			for (int i=0; i<100; i++) {
+				Vector3 pos = new Vector3(Random.value *+720,Random.value*100 - 40, Random.value*200 + 10);
+				Transform vb = Instantiate(vectionCandle, pos, Quaternion.identity) as Transform;
+				vb.parent = vbParent;
+			}
 		}
 	}
 	
 	public static void loadNextLevelTutorial(){
 		currentLevel++;
 		fadeLight = true;
+	}
+	
+	public static void loadNextLevel(){
+		currentLevel++;
+			Application.LoadLevel(currentLevel);
 	}
 	
 	public static void FadeLight(){
@@ -46,31 +53,33 @@ public class Globals : MonoBehaviour
 	
 	
 	void Update(){
-		float heroX = GameObject.Find("_Hero").transform.position.x;
-		float heroY = GameObject.Find("_Hero").transform.position.y;
-		foreach (Transform child in vbParent){
-			if (-heroX+child.position.x > 100){
-				Vector3 loc = child.position;
-				loc.x -= 200;
-				child.position = loc;
-			}
-			
-			else if(heroX-child.position.x > 100){
-				Vector3 loc = child.position;
-				loc.x += 200;
-				child.position = loc;	
-			}
-			
-			if(-heroY+child.position.y > 100){
-				Vector3 loc = child.position;
-				loc.y -= 200;
-				child.position = loc;
-			}
-			
-			else if(heroY - child.position.y > 100){
-				Vector3 loc = child.position;
-				loc.y += 200;
-				child.position = loc;	
+		if(GameObject.Find("_Hero") != null){
+			float heroX = GameObject.Find("_Hero").transform.position.x;
+			float heroY = GameObject.Find("_Hero").transform.position.y;
+			foreach (Transform child in vbParent){
+				if (-heroX+child.position.x > 100){
+					Vector3 loc = child.position;
+					loc.x -= 200;
+					child.position = loc;
+				}
+				
+				else if(heroX-child.position.x > 100){
+					Vector3 loc = child.position;
+					loc.x += 200;
+					child.position = loc;	
+				}
+				
+				if(-heroY+child.position.y > 80){
+					Vector3 loc = child.position;
+					loc.y -= 100;
+					child.position = loc;
+				}
+				
+				else if(heroY - child.position.y > 80){
+					Vector3 loc = child.position;
+					loc.y += 100;
+					child.position = loc;	
+				}
 			}
 		}
 		
