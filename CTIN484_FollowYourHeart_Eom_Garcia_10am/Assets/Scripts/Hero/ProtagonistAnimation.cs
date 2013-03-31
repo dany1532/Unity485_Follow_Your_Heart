@@ -30,6 +30,14 @@ public class ProtagonistAnimation : MonoBehaviour {
 	void Update () {
 	
 	//Jumping animation
+		if(charMovement.inCutscene){
+			this.transform.FindChild("Hero_Sprite").GetComponent<MeshRenderer>().enabled = false;	
+		}
+		
+		else{
+			this.transform.FindChild("Hero_Sprite").GetComponent<MeshRenderer>().enabled = true;
+		}
+		
 		if(charMovement.state == CharacterMovement.states.jump &&
 			sJump == StateJump.none && !anim.IsPlaying("InitialJump_Left")){
 			

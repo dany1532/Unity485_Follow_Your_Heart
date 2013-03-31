@@ -15,6 +15,7 @@ using System.Collections;
 public class Triggers : MonoBehaviour
 {
 	public GameObject deathPrefab;
+	public GameObject umbrellaGirl;
 	private bool beenKilled = false;
 	private GameObject mySprite;
 	
@@ -44,6 +45,8 @@ public class Triggers : MonoBehaviour
 	}
 	
 	void Restart(){
+		
+		umbrellaGirl.GetComponent<UmbrellaGirl>().restart();
 		this.rigidbody.constraints = RigidbodyConstraints.None;
 		
 		Vector3 loc = Globals.currentCheckPoint.transform.position;

@@ -11,7 +11,7 @@ Shader "tk2d/BlendVertexColor"
 	SubShader
 	{
 		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
-		ZWrite Off Lighting Off Cull Off Fog { Mode Off } Blend SrcAlpha OneMinusSrcAlpha
+		ZWrite Off Lighting On Cull Off Fog { Mode Off } Blend SrcAlpha OneMinusSrcAlpha
 		LOD 110
 		
 		Pass 
@@ -73,7 +73,7 @@ Shader "tk2d/BlendVertexColor"
 
 		Pass 
 		{
-			Lighting Off
+			Lighting On
 			SetTexture [_MainTex] { combine texture * primary } 
 		}
 	}

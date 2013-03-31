@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Globals : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Globals : MonoBehaviour
 	public Transform vbParent;
 	public Transform candlePrefab;
 	public Transform rainPrefab;
+	public static Transform level1;
+	public static Transform level2;
 	public GameObject tutorialLight;
 	private static int currentLevel = 1;
 	private static bool fadeLight = false;
@@ -27,7 +30,7 @@ public class Globals : MonoBehaviour
 		if(GameObject.Find("_Hero") != null){
 			vbParent = (new GameObject()).transform;
 			vbParent.position = GameObject.Find("_Hero").transform.position;
-			vbParent.gameObject.name = "Candle";
+			vbParent.gameObject.name = "CandleP";
 			for (int i=0; i<100; i++) {
 				Vector3 pos = new Vector3(Random.value *+720,Random.value*100 - 40, Random.value*200 + 10);
 				Transform vb = Instantiate(vectionCandle, pos, Quaternion.identity) as Transform;
@@ -50,7 +53,39 @@ public class Globals : MonoBehaviour
 		fadeLight = true;	
 	}
 	
+	public static void deleteLevel1(){
+		level1 = GameObject.Find("FirstLevel").transform;
+		List<GameObject> children = new List<GameObject>();
+    	foreach (Transform child in level1) 
+			children.Add(child.gameObject);
+    	children.ForEach(child => Destroy(child));	
+	}
 	
+	public static void deleteLevel2(){
+		level2 = GameObject.Find("SecondLevel").transform;
+		List<GameObject> children = new List<GameObject>();
+    	foreach (Transform child in level1) 
+			children.Add(child.gameObject);
+    	children.ForEach(child => Destroy(child));	
+	}
+	
+	public static void turnOffLight(){
+		Transform parent = GameObject.Find("CandleP").transform;
+		foreach(Transform child in parent){
+			child.FindChild("Candle_Halo").light.enabled = false;	
+		}
+		Transform lantern = GameObject.Find("_Hero").transform.FindChild("Lantern");
+		lantern.FindChild("Candle_Light").light.enabled = false;
+	}
+	
+	public static void turnOnLight(){
+		Transform parent = GameObject.Find("CandleP").transform;
+		foreach(Transform child in parent){
+			child.FindChild("Candle_Halo").light.enabled = true;	
+		}
+		Transform lantern = GameObject.Find("_Hero").transform.FindChild("Lantern");
+		lantern.FindChild("Candle_Light").light.enabled = true;
+	}
 	
 	void Update(){
 		if(GameObject.Find("_Hero") != null){

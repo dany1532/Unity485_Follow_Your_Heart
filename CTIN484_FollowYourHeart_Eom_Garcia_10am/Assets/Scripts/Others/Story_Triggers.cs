@@ -39,6 +39,7 @@ public class Story_Triggers : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 	//Story Events
 	if(other.gameObject.name == "_Hero"){
+		if(!startCutscene){
 			if(myId == 1){
 				Globals.upperVoice = "I remember that I was going to my home...";
 				Globals.lowerVoice = "Move with A-D";
@@ -310,6 +311,8 @@ public class Story_Triggers : MonoBehaviour {
 				upGUI.setMyTop(100f);
 				
 				lowGUI.setMyLeft(255f);
+				Globals.deleteLevel1();
+				Globals.deleteLevel2();
 			}
 			
 			if(myId == 32){
@@ -388,6 +391,7 @@ public class Story_Triggers : MonoBehaviour {
 				upGUI.setMyTop(100f);
 				
 				lowGUI.setMyLeft(255f);
+				
 			}
 			
 			if(myId == 41){
@@ -412,7 +416,8 @@ public class Story_Triggers : MonoBehaviour {
 					Vector3 pos = other.gameObject.transform.position;
 					pos.y += 50;
 					pos.x += 145;
-					Instantiate(rainPrefab,pos,Quaternion.identity);
+					GameObject rain = Instantiate(rainPrefab,pos,Quaternion.identity) as GameObject;
+					rain.name = "Rain";
 					startCutscene = true;
 				}
 			}
@@ -441,8 +446,13 @@ public class Story_Triggers : MonoBehaviour {
 			
 			if(myId == 45){
 				if(!startCutscene){
-					Globals.loadNextLevel();
+					playerScript = other.gameObject.GetComponent<CharacterMovement>();
+					playerScript.inCutscene = true;
 					startCutscene = true;
+					Globals.turnOffLight();
+					myEvent = StoryEvent.ev0;
+					Destroy(GameObject.Find("Rain"));
+					InvokeRepeating("StoryEvent45", 0, 5.5f);
 				}
 			}
 			
@@ -457,6 +467,9 @@ public class Story_Triggers : MonoBehaviour {
 				lowGUI.setMyLeft(355f);
 				}
 			}
+		}
+		
+		startCutscene = true;
 			
 	 }		
 }
@@ -566,7 +579,7 @@ public class Story_Triggers : MonoBehaviour {
 		}*/
 	}
 	
-		void StoryEvent26(){
+	void StoryEvent26(){
 		if(myEvent == StoryEvent.ev0){
 			Globals.upperVoice = "This place reminds me of that lake...";
 			myEvent = StoryEvent.ev1;
@@ -611,19 +624,50 @@ public class Story_Triggers : MonoBehaviour {
 		} */
 	}
 	
-	void lowerVoiceStory8(){
-		Globals.lowerVoice = "Believe..";	
+	void StoryEvent45(){
+		if(myEvent == StoryEvent.ev0){
+			Globals.lowerVoice = "Thank you so much.";
+			myEvent = StoryEvent.ev1;
+			upGUI.setMyLeft(300f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(255f);
+		}	
+		
+		else if(myEvent == StoryEvent.ev1){
+			lowerVoiceStyle.normal.textColor = Color.gray;
+			Globals.lowerVoice = "If you hadn't come, I...";
+			myEvent = StoryEvent.ev2;
+			upGUI.setMyLeft(200f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(255f);
+		}
+		
+		else if(myEvent == StoryEvent.ev2){
+			lowerVoiceStyle.normal.textColor = Color.gray;
+			Globals.lowerVoice = "I won't forget this kindness";
+			myEvent = StoryEvent.ev3;
+			upGUI.setMyLeft(400f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(100f);
+			umbrellaGirl.GetComponent<UmbrellaGirl>().goLeft();
+		}
+		
+		else if(myEvent == StoryEvent.ev3){
+			lowerVoiceStyle.normal.textColor = Color.gray;
+			Globals.lowerVoice = "I will repay you somehow";
+			myEvent = StoryEvent.ev4;
+			upGUI.setMyLeft(400f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(100f);
+			umbrellaGirl.GetComponent<UmbrellaGirl>().goLeft();
+		}
+		
+		else if(myEvent == StoryEvent.ev4){
+			this.playerScript.inCutscene = false;
+			Globals.turnOnLight();
+		}
+		
 	}
 	
-	void lowerVoiceStory13(){
-		Globals.lowerVoice = "Whatever doesn't kill us...";	
-	}
-	
-	void lowerVoiceStory14(){
-		Globals.lowerVoice = "For now...";	
-	}
-	void lowerVoiceStory16(){
-		Globals.lowerVoice = "Shadows of Doubt";	
-	}	
 	
 }

@@ -25,7 +25,10 @@ public class MovingPlatform : MonoBehaviour {
 		
 		
 		if(platState == TraversalState.right)
-			desiredPosition = loc.x + traversalDistance;	
+			desiredPosition = loc.x + traversalDistance;
+		
+		if(platState == TraversalState.left)
+			desiredPosition = loc.x - traversalDistance;
 		
 		if(platState == TraversalState.down)
 			desiredPosition = loc.y - traversalDistance;

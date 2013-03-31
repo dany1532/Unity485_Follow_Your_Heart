@@ -1,15 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Others\Story_Triggers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Others\MovingPlatform.cs">
     <Files>
-      <File FileName="Assets\Scripts\Others\Story_Triggers.cs" Line="444" Column="29" />
-      <File FileName="Assets\Scripts\Others\UmbrellaGirl.cs" Line="24" Column="23" />
-      <File FileName="Assets\Scripts\Others\PickUp.cs" Line="7" Column="37" />
-      <File FileName="Assets\Scripts\Others\FadeOutObject.cs" Line="23" Column="27" />
-      <File FileName="Assets\Scripts\Others\BeginningStory.cs" Line="92" Column="18" />
-      <File FileName="Assets\Scripts\Others\Music_Manager.cs" Line="36" Column="19" />
-      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Others\Globals.cs" Line="45" Column="18" />
+      <File FileName="Assets\Scripts\Others\Story_Triggers.cs" Line="23" Column="1" />
+      <File FileName="Assets\Scripts\Others\UmbrellaGirl.cs" Line="136" Column="35" />
+      <File FileName="Assets\Scripts\Others\Music_Manager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="227" Column="6" />
+      <File FileName="Assets\Scripts\Others\Globals.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Hero\ProtagonistAnimation.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Others\TriggerNumbering.cs" Line="9" Column="3" />
+      <File FileName="Assets\Scripts\Others\Triggers.cs" Line="52" Column="1" />
+      <File FileName="Assets\Scripts\Others\TorchTrigger.cs" Line="21" Column="1" />
+      <File FileName="Assets\Scripts\Others\MovingPlatform.cs" Line="31" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
