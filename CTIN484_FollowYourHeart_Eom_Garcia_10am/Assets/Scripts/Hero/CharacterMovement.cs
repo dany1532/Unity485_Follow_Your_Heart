@@ -14,6 +14,7 @@ public class CharacterMovement : MonoBehaviour
 	public float walkSpeed = 6;
 	public float jumpSpeed = 15;
 	private float climbSpeed = 6;
+	private float horizClimbSpeed = 10;
 	private float pushingSpeed = 3;
 	public float floatingSpeed = 1;
 	public float platformSpeedX = 0f;
@@ -43,22 +44,26 @@ public class CharacterMovement : MonoBehaviour
 	
 	
 	private float ladderPosX;
-	private float ladderPosDiff = 1f;	// Maximum distance between ladderPosX and character before clamping character to ladder
-	private float ladderPosAdd = 1f;	// Adding a length to the left or right of ladderPosX to distinguish player to the left or right 
-	
+	private float ladderClampMinDist = 1f;	// Minimum distance between ladderPosX and character before clamping character to ladder
+	private float ladderClampBoundingDist = 0.8f;	// The limit in range of character horizontal movement while on ladder
+	private float ladderCurrentDist = 0f;	// The current character x-distance away from ladder
 	
 	
 	void Start()
 	{
 		state = states.idleLeft;
-		
-		
 	}
 	
 	void Update()
 	{
-	  if(!inCutscene){
-			// Jumping
+		// TEMP
+			print (state);
+		
+		if(!inCutscene)
+		{
+	
+		// Jumping
+			
 			if(Input.GetKeyDown(KeyCode.Space) && isGrounded)				// standard jump
 			{
 				
@@ -87,74 +92,56 @@ public class CharacterMovement : MonoBehaviour
 					rigidbody.velocity += Vector3.up * extendedJumpVelocity * Time.deltaTime;
 				}
 			}
-			/*
-		// Jumping
-		if(Input.GetKeyDown(KeyCode.Space) && isGrounded && !landing)
-		{
-			state = states.jump;
-			rigidbody.velocity = Vector3.up * jumpSpeed;
-				
-		}
-		if(Input.GetKeyDown(KeyCode.Space) && state == states.climb)
-		{
-			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-			{
-				state = states.jump;
-				rigidbody.velocity = Vector3.up * jumpSpeed;
-			}
-			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-			{
-				state = states.jump;
-				rigidbody.velocity = Vector3.up * jumpSpeed;
-			}
-		}
-		*/
 			
 		// Horizontal movement
-			//Move Left
-			if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+			
+			if(state != states.climb)
 			{
-				RaycastHit hit;
-				
-				isRockLeft = true;
-	
-				if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+				// Move left
+				if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 				{
-					transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+					RaycastHit hit;
+					
+					isRockLeft = true;
+		
+					if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+					{
+						transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+					}
+					
+					if(isGrounded && !landing && state != states.floating 
+													&& state != states.climb){
+							state = states.walkLeft;	
+					}
+					else
+							state = states.jump;
+		
 				}
-				
-				if(state != states.jump && !landing && state != states.floating 
-												&& state != states.climb){
-						state = states.walkLeft;	
-				}
-				else
-						state = states.jump;
-	
-			}
-			else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-			{
-				
-				RaycastHit hit;
-				isRockLeft = false;
-				if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+				// Move right
+				else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
 				{
-					transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+					
+					RaycastHit hit;
+					isRockLeft = false;
+					if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+					{
+						transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+					}
+						
+					if(isGrounded && !landing && state != states.floating
+															&& state != states.climb){
+							state = states.walkRight;
+					}
+					else
+							state = states.jump;
 				}
 					
-				if(state != states.jump && !landing && state != states.floating
-														&& state != states.climb){
-						state = states.walkRight;	
+				else if (isGrounded){
+					if(Input.GetKeyUp(KeyCode.A))
+						state = states.idleLeft;
+					else if(Input.GetKeyUp(KeyCode.D))
+						state = states.idleRight;	
 				}
-				else
-						state = states.jump;
-			}
-				
-			else if (isGrounded){
-				if(Input.GetKeyUp(KeyCode.A))
-					state = states.idleLeft;
-				else if(Input.GetKeyUp(KeyCode.D))
-					state = states.idleRight;
-					
 			}
 			
 		//Platform Translation
@@ -176,9 +163,10 @@ public class CharacterMovement : MonoBehaviour
 			}
 		
 		// Ladder climbing
+			
 			if(canClimb)
 			{
-				if(Mathf.Abs(transform.position.x-ladderPosX) < ladderPosDiff)
+				if(Mathf.Abs(transform.position.x-ladderPosX) < ladderClampMinDist)
 				{
 					if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
 					{
@@ -195,9 +183,41 @@ public class CharacterMovement : MonoBehaviour
 						transform.Translate (Vector3.down * Time.deltaTime * climbSpeed);
 					}
 				}
+				
+			// Horizontal movement on ladder
+				
 				if(state == states.climb)
 				{
-					transform.position = new Vector3(ladderPosX,transform.position.y,transform.position.z);
+					if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+					{																// Move left on ladder
+						if(ladderCurrentDist > -ladderClampBoundingDist)
+						{
+							ladderCurrentDist -= Time.deltaTime * horizClimbSpeed;
+						}
+					}
+					else if(!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+					{																// Move right on ladder
+						if(ladderCurrentDist < ladderClampBoundingDist)
+						{
+							ladderCurrentDist += Time.deltaTime * horizClimbSpeed;
+						}
+					}
+					else
+					{																// Re-center character position on ladder
+						if(ladderCurrentDist > 0.1f)
+						{
+							ladderCurrentDist -= Time.deltaTime * horizClimbSpeed;
+						}
+						else if (ladderCurrentDist < -0.1f)
+						{
+							ladderCurrentDist += Time.deltaTime * horizClimbSpeed;
+						}
+						else
+						{
+							ladderCurrentDist = 0;
+						}
+					}
+					transform.position = new Vector3(ladderPosX + ladderCurrentDist,transform.position.y,transform.position.z);
 				}
 			}
 		

@@ -29,6 +29,30 @@ public class ProtagonistAnimation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+		// Jump direction
+		if(charMovement.state == CharacterMovement.states.jump && !anim.IsPlaying("InitialJump_Left"))
+		{
+			if(sJump == StateJump.air)
+			{
+				if (dJump == DirectionJump.left)
+				{
+					if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+					{
+						dJump = DirectionJump.right;
+						anim.Play("Jump_Right");	
+					}
+				}
+				else if (dJump == DirectionJump.right)
+				{
+					if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+					{
+						dJump = DirectionJump.left;
+						anim.Play("Jump_Left");	
+					}
+				}
+			}
+		}
+		
 	//Jumping animation
 		if(charMovement.inCutscene){
 			this.transform.FindChild("Hero_Sprite").GetComponent<MeshRenderer>().enabled = false;	
@@ -68,12 +92,12 @@ public class ProtagonistAnimation : MonoBehaviour {
 			dJump = DirectionJump.left;
 			sJump = StateJump.air;
 			
-			if(lastClip == "Idle_Right" || lastClip == "Walk_Right"){
+			if(dJump == DirectionJump.right){
 				anim.Play("Falling_Right");	
 				anim.animationCompleteDelegate = null;	
 			}
 			
-			else if(lastClip == "Idle_Left" || lastClip == "Walk_Left"){
+			else if(dJump == DirectionJump.left){
 				anim.Play("Falling_Left");	
 				anim.animationCompleteDelegate = null;
 			};	
@@ -84,12 +108,12 @@ public class ProtagonistAnimation : MonoBehaviour {
 		else if(charMovement.landing &&
 			   !anim.IsPlaying("Land_Right") && !anim.IsPlaying("Land_Left")){
 			
-			if(lastClip == "Idle_Right" || lastClip == "Walk_Right"){
+			if(dJump == DirectionJump.right){
 				anim.Play("Land_Right");	
 				anim.animationCompleteDelegate = LandCompleteDelegate;	
 			}
 			
-			else if(lastClip == "Idle_Left" || lastClip == "Walk_Left"){
+			else if(dJump == DirectionJump.left){
 				anim.Play("Land_Left");	
 				anim.animationCompleteDelegate = LandCompleteDelegate;
 			}
@@ -134,16 +158,14 @@ public class ProtagonistAnimation : MonoBehaviour {
 	
 	void LandCompleteDelegate(tk2dAnimatedSprite sprite, int clipId)
     {
-        if(lastClip == "Idle_Left" || lastClip == "Walk_Left"){
-			dJump = DirectionJump.left;
+        if(dJump == DirectionJump.left){
 			sJump = StateJump.none;
 			anim.Play("Idle_Left");
 			anim.animationCompleteDelegate = null;
 			charMovement.state = CharacterMovement.states.idleLeft;	
 		}
 		
-		else if(lastClip == "Idle_Right" || lastClip == "Walk_Right"){
-			dJump = DirectionJump.right;
+		else if(dJump == DirectionJump.right){
 			sJump = StateJump.none;
 			anim.Play("Idle_Right");
 			anim.animationCompleteDelegate = null;
