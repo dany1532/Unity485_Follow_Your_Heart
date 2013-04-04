@@ -30,8 +30,8 @@ public class ProtagonistAnimation : MonoBehaviour {
 	void Update () {
 	
 		// Jump direction
-		if(charMovement.state == CharacterMovement.states.jump && !anim.IsPlaying("InitialJump_Left"))
-		{
+		//if(charMovement.state == CharacterMovement.states.jump && !anim.IsPlaying("InitialJump_Left"))
+		//{
 			if(sJump == StateJump.air)
 			{
 				if (dJump == DirectionJump.left)
@@ -39,7 +39,9 @@ public class ProtagonistAnimation : MonoBehaviour {
 					if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
 					{
 						dJump = DirectionJump.right;
-						anim.Play("Jump_Right");	
+					    lastClip = "Idle_Right";
+						anim.Play("Jump_Right");
+						moveLanternRight();
 					}
 				}
 				else if (dJump == DirectionJump.right)
@@ -47,11 +49,13 @@ public class ProtagonistAnimation : MonoBehaviour {
 					if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 					{
 						dJump = DirectionJump.left;
+						lastClip = "Idle_Left";
 						anim.Play("Jump_Left");	
+						moveLanternLeft();
 					}
 				}
 			}
-		}
+		//}
 		
 	//Jumping animation
 		if(charMovement.inCutscene){
@@ -92,19 +96,19 @@ public class ProtagonistAnimation : MonoBehaviour {
 			dJump = DirectionJump.left;
 			sJump = StateJump.air;
 			
-			if(dJump == DirectionJump.right){
+			if(lastClip == "Idle_Right" || lastClip == "Walk_Right"){
 				anim.Play("Falling_Right");	
 				anim.animationCompleteDelegate = null;	
 			}
 			
-			else if(dJump == DirectionJump.left){
+			else if(lastClip == "Idle_Left" || lastClip == "Walk_Left"){
 				anim.Play("Falling_Left");	
 				anim.animationCompleteDelegate = null;
 			};	
 			
 		}
 		
-	//Landing animation
+	/*//Landing animation
 		else if(charMovement.landing &&
 			   !anim.IsPlaying("Land_Right") && !anim.IsPlaying("Land_Left")){
 			
@@ -114,6 +118,22 @@ public class ProtagonistAnimation : MonoBehaviour {
 			}
 			
 			else if(dJump == DirectionJump.left){
+				anim.Play("Land_Left");	
+				anim.animationCompleteDelegate = LandCompleteDelegate;
+			}
+			
+		}*/
+			
+	//Landing animation
+		else if(charMovement.landing &&
+			   !anim.IsPlaying("Land_Right") && !anim.IsPlaying("Land_Left")){
+			
+			if(lastClip == "Idle_Right" || lastClip == "Walk_Right"){
+				anim.Play("Land_Right");	
+				anim.animationCompleteDelegate = LandCompleteDelegate;	
+			}
+			
+			else if(lastClip == "Idle_Left" || lastClip == "Walk_Left"){
 				anim.Play("Land_Left");	
 				anim.animationCompleteDelegate = LandCompleteDelegate;
 			}
@@ -158,7 +178,7 @@ public class ProtagonistAnimation : MonoBehaviour {
 	
 	void LandCompleteDelegate(tk2dAnimatedSprite sprite, int clipId)
     {
-        if(dJump == DirectionJump.left){
+       /* if(dJump == DirectionJump.left){
 			sJump = StateJump.none;
 			anim.Play("Idle_Left");
 			anim.animationCompleteDelegate = null;
@@ -166,6 +186,26 @@ public class ProtagonistAnimation : MonoBehaviour {
 		}
 		
 		else if(dJump == DirectionJump.right){
+			sJump = StateJump.none;
+			anim.Play("Idle_Right");
+			anim.animationCompleteDelegate = null;
+			charMovement.state = CharacterMovement.states.idleRight;
+		}
+		
+		charMovement.landing = false;
+		doneLanding = true;
+		falling = false;*/
+		
+		if(lastClip == "Idle_Left" || lastClip == "Walk_Left"){
+			dJump = DirectionJump.left;
+			sJump = StateJump.none;
+			anim.Play("Idle_Left");
+			anim.animationCompleteDelegate = null;
+			charMovement.state = CharacterMovement.states.idleLeft;	
+		}
+		
+		else if(lastClip == "Idle_Right" || lastClip == "Walk_Right"){
+			dJump = DirectionJump.right;
 			sJump = StateJump.none;
 			anim.Play("Idle_Right");
 			anim.animationCompleteDelegate = null;

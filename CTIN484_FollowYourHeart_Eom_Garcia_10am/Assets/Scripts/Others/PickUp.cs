@@ -6,8 +6,8 @@ public class PickUp : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.name == "_Hero"){
 			
-			if(this.gameObject.name == "Pills"){
-				other.gameObject.GetComponent<CharacterMovement>().hasPills = true;
+			if(this.gameObject.name == "Apple"){
+				other.gameObject.GetComponent<CharacterMovement>().pickUpApple();
 				Destroy(this.gameObject);
 			}
 			
@@ -18,6 +18,7 @@ public class PickUp : MonoBehaviour {
 			
 			if(this.gameObject.tag == "Lantern"){
 				other.gameObject.GetComponent<CharacterMovement>().TurnOnLantern();
+				Globals.turnOnLight();
 				Destroy(this.gameObject);
 			}
 		}

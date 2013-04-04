@@ -36,7 +36,8 @@ public class CharacterMovement : MonoBehaviour
 	private bool isFloating;
 	public bool canClimb;
 	public bool nearSwitch;
-	public bool hasPills = false;
+	public bool hasApples = false;
+	public int numApples = 0;
 	public bool nextLevel = false;
 	public bool inCutscene = false;
 	public bool landing = false;
@@ -57,7 +58,7 @@ public class CharacterMovement : MonoBehaviour
 	void Update()
 	{
 		// TEMP
-			print (state);
+			//print (state);
 		
 		if(!inCutscene)
 		{
@@ -232,6 +233,8 @@ public class CharacterMovement : MonoBehaviour
 				else
 				{
 					state = states.jump;
+					isFloating = false;
+					rigidbody.useGravity = true;
 				}
 			}
 			if(isFloating)
@@ -261,10 +264,13 @@ public class CharacterMovement : MonoBehaviour
 		
 			if(Input.GetKeyDown(KeyCode.F)){
 				Vector3 loc = this.transform.position;
-				if(isRockLeft)
+				if(isRockLeft){
 					loc.x -= 2;
-				else
+				}
+				else{
 					loc.x += 2;
+				}
+				loc.y += 1f;
 				Instantiate(rockPrefab,	loc, Quaternion.identity);
 			}
 	  	}
@@ -330,6 +336,11 @@ public class CharacterMovement : MonoBehaviour
 		canFloat = true;	
 	}
 	
+	public void pickUpApple(){
+		numApples++;
+		if(numApples == 3)
+			hasApples = true;
+	}
 	
 	void OnTriggerExit(Collider collider)
 	{

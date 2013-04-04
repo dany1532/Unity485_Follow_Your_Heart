@@ -18,6 +18,11 @@ public class BeginningStory : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.Space)){
+			mng.playHome();
+		Application.LoadLevel(1);
+		}
+			
 		if(myEvent == StoryEvent.ev0){
 			Globals.upperVoice = "Somewhere...";
 			myEvent = StoryEvent.do_nothing;
@@ -36,7 +41,7 @@ public class BeginningStory : MonoBehaviour {
 			Invoke("event3", nextEventSeconds);
 		}
 		else if(myEvent == StoryEvent.ev3){
-			Globals.upperVoice = "\n\n        My Life isn't the way it was supposed to be...";
+			Globals.upperVoice = "\n\n        My life isn't the way it was supposed to be...";
 			myEvent = StoryEvent.do_nothing;
 			Invoke("event4", nextEventSeconds);
 		}

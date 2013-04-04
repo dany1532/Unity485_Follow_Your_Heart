@@ -9,6 +9,7 @@ public class Globals : MonoBehaviour
 	public static string upperVoice = "";
 	public static string lowerVoice = "";
 	public static bool deathMother = false;
+	public static int waitTime = 0;
 	
 	// Hero position
 	public static Vector3 heroPos = Vector3.zero;
@@ -37,7 +38,11 @@ public class Globals : MonoBehaviour
 				vb.parent = vbParent;
 			}
 		}
+		
+		heroPos = GameObject.Find("_Hero").transform.position;
 	}
+	
+
 	
 	public static void loadNextLevelTutorial(){
 		currentLevel++;
@@ -46,7 +51,7 @@ public class Globals : MonoBehaviour
 	
 	public static void loadNextLevel(){
 		currentLevel++;
-			Application.LoadLevel(currentLevel);
+		Application.LoadLevel(currentLevel);
 	}
 	
 	public static void FadeLight(){
@@ -76,6 +81,8 @@ public class Globals : MonoBehaviour
 		}
 		Transform lantern = GameObject.Find("_Hero").transform.FindChild("Lantern");
 		lantern.FindChild("Candle_Light").light.enabled = false;
+		
+		
 	}
 	
 	public static void turnOnLight(){
@@ -121,10 +128,11 @@ public class Globals : MonoBehaviour
 		if(fadeLight){
 			float intensity = tutorialLight.light.intensity - Time.deltaTime/(fadeSpeed);
 			tutorialLight.light.intensity = intensity;
+			turnOffLight();
 			
 			if(intensity <= 0){
 				fadeLight = false;
-				Invoke("goToNextLevel",2);
+				Invoke("goToNextLevel",waitTime);
 				
 			}
 		}

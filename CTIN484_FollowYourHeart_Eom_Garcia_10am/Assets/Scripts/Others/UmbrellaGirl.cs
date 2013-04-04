@@ -11,8 +11,8 @@ public class UmbrellaGirl : MonoBehaviour {
 	private float desiredPosition;
 	public enum Direction {left, right, none};
 	public Direction myDir = Direction.none;
-	Direction lastDir = Direction.none;
-	Direction nextDir = Direction.none;
+	public Direction lastDir = Direction.none;
+	public Direction nextDir = Direction.none;
 	public bool useFloat;
 	public bool useJump;
 	public bool isGrounded;
@@ -113,6 +113,7 @@ public class UmbrellaGirl : MonoBehaviour {
 	}
 	
 	public void goLeft(){
+		startAnim = false;
 		myDir = Direction.left;	
 	}
 	
@@ -135,6 +136,6 @@ public class UmbrellaGirl : MonoBehaviour {
 	public void restart(){
 		this.gameObject.SetActive(true);
 		this.transform.position = girlCheckpoint;	
-		myDir = Direction.left;
+		//myDir = Direction.left;
 	}
 }

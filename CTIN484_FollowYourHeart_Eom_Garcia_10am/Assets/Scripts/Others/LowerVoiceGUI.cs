@@ -16,12 +16,30 @@ public class LowerVoiceGUI : MonoBehaviour
 	public float freezeDuration = 3;		// The amount of time that text is shown at alpha = 1
 	float alpha;							// text color alpha in RGBA
 	float previousTime;						// last recorded time, to measure delta time
+	public Font fearFont;
+	public Font motherFont;
 	
 	private float myLeft = 10;
 	private float myTop = 550;
 	
 	public enum states { fadeIn, fadeOut, freezeText, doNothing };
 	public states state;
+	
+	public void setFearFont(){
+		myStyle.font = fearFont;
+	}
+	
+	public void setMotherFont(){
+		myStyle.font = motherFont;	
+	}
+	
+	public void setRedColor(){
+		myStyle.normal.textColor = Color.red;	
+	}
+	
+	public void setYellowColor(){
+		myStyle.normal.textColor = Color.yellow;	
+	}
 	
 	void Start ()
 	{

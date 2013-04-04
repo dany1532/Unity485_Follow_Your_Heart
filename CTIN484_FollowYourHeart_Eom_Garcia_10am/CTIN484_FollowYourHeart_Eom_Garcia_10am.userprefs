@@ -1,10 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Hero\FinalLevelMechanic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Others\Story_Triggers.cs">
     <Files>
-      <File FileName="Assets\Scripts\Hero\FinalLevelMechanic.cs" Line="32" Column="29" />
-      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="14" Column="29" />
-      <File FileName="Assets\Scripts\Hero\ProtagonistAnimation.cs" Line="69" Column="36" />
+      <File FileName="Assets\Scripts\Hero\FinalLevelMechanic.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="39" Column="31" />
+      <File FileName="Assets\Scripts\Hero\ProtagonistAnimation.cs" Line="54" Column="25" />
+      <File FileName="..\..\..\..\Desktop\Unity485_Follow_Your_Heart\CTIN484_FollowYourHeart_Eom_Garcia_10am\Assets\Scripts\Hero\ProtagonistAnimation.cs" Line="156" Column="42" />
+      <File FileName="Assets\Scripts\Others\PickUp.cs" Line="9" Column="37" />
+      <File FileName="Assets\Scripts\Others\Story_Triggers.cs" Line="515" Column="5" />
+      <File FileName="Assets\Scripts\Others\Globals.cs" Line="131" Column="23" />
+      <File FileName="Assets\Scripts\Others\TorchTrigger.cs" Line="5" Column="1" />
+      <File FileName="Assets\Scripts\Others\FadeOutObject.cs" Line="55" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

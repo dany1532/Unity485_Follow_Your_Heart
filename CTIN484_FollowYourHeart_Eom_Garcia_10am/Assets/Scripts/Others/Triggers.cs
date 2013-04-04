@@ -25,6 +25,8 @@ public class Triggers : MonoBehaviour
 			Vector3 loc = Globals.currentCheckPoint.transform.position;
 			loc.z = 1.25f;
 			this.transform.position = loc;
+			mySprite = this.transform.FindChild("Hero_Sprite").gameObject;
+			Restart();
 		}
 		
 		if(!beenKilled && other.gameObject.name == "Spike" ||

@@ -52,7 +52,7 @@ public class FadeOutObject : MonoBehaviour {
             transform.parent.renderer.material.SetColor(propertyName, newColor);
 			if(alfa <= 0){
 				isDone = true;
-				player.GetComponent<CharacterMovement>().inCutscene = false;
+				//player.GetComponent<CharacterMovement>().inCutscene = false;
 				Destroy(this.gameObject.transform.parent.gameObject);
 			}
         }

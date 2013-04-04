@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Rock : MonoBehaviour {
-	public float rockSpeed = 40;
+	public float rockSpeed = 20;
 	private bool isLeft = true;
 	// Use this for initialization
 	void Start () {

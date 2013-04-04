@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Others\DestructiblePlatform.cs" />
      <Compile Include="Assets\Scripts\Others\EndStory.cs" />
      <Compile Include="Assets\Scripts\Others\FadeOutObject.cs" />
+     <Compile Include="Assets\Scripts\Others\Final_Camera.cs" />
      <Compile Include="Assets\Scripts\Others\Globals.cs" />
      <Compile Include="Assets\Scripts\Others\LowerVoiceGUI.cs" />
      <Compile Include="Assets\Scripts\Others\MovingPlatform.cs" />
