@@ -18,7 +18,7 @@ public class PickUp : MonoBehaviour {
 			
 			if(this.gameObject.tag == "Lantern"){
 				other.gameObject.GetComponent<CharacterMovement>().TurnOnLantern();
-				Globals.turnOnLight();
+				//Globals.turnOnLight();
 				Destroy(this.gameObject);
 			}
 		}

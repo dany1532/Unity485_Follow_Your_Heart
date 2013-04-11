@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Music_Manager : MonoBehaviour {
+	public AudioClip firstScene;
 	public AudioClip village;
 	public AudioClip motherDeath;
 	public AudioClip darkness;

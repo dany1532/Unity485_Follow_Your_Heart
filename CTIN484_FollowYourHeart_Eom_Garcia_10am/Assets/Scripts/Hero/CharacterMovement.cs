@@ -37,7 +37,6 @@ public class CharacterMovement : MonoBehaviour
 	public bool canClimb;
 	public bool nearSwitch;
 	public bool hasApples = false;
-	public int numApples = 0;
 	public bool nextLevel = false;
 	public bool inCutscene = false;
 	public bool landing = false;
@@ -337,9 +336,7 @@ public class CharacterMovement : MonoBehaviour
 	}
 	
 	public void pickUpApple(){
-		numApples++;
-		if(numApples == 3)
-			hasApples = true;
+		hasApples = true;
 	}
 	
 	void OnTriggerExit(Collider collider)

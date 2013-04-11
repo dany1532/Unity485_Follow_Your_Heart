@@ -588,7 +588,7 @@ public class Story_Triggers : MonoBehaviour {
 				InvokeRepeating("StoryEvent59", 0, 5.5f);
 				Globals.turnOffLight();
 				Globals.waitTime = 7;
-				Globals.loadNextLevelTutorial();
+				//Globals.loadNextLevelTutorial();
 			}
 				
 			if(myId == 60){
@@ -1088,9 +1088,12 @@ public class Story_Triggers : MonoBehaviour {
 			Globals.upperVoice = "It's been a long journey";
 			myEvent = StoryEvent.ev2;
 			upGUI.setMyLeft(455f);
-				upGUI.setMyTop(100f);
-				
-				lowGUI.setMyLeft(255f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(255f);
+		}
+		
+		else if(myEvent == StoryEvent.ev2){
+			Globals.loadNextLevel();	
 		}
 	}
 	
