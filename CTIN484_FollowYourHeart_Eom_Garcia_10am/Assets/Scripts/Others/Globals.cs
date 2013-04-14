@@ -39,7 +39,8 @@ public class Globals : MonoBehaviour
 			}
 		}
 		
-		heroPos = GameObject.Find("_Hero").transform.position;
+		if(heroPos != null)
+			heroPos = GameObject.Find("_Hero").transform.position;
 	}
 	
 
@@ -86,10 +87,10 @@ public class Globals : MonoBehaviour
 	}
 	
 	public static void turnOnLight(){
-		Transform parent = GameObject.Find("CandleP").transform;
+		/*Transform parent = GameObject.Find("CandleP").transform;
 		foreach(Transform child in parent){
 			child.FindChild("Candle_Halo").light.enabled = true;	
-		}
+		}*/
 		Transform lantern = GameObject.Find("_Hero").transform.FindChild("Lantern");
 		lantern.FindChild("Candle_Light").light.enabled = true;
 	}

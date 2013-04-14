@@ -136,6 +136,6 @@ public class UmbrellaGirl : MonoBehaviour {
 	public void restart(){
 		this.gameObject.SetActive(true);
 		this.transform.position = girlCheckpoint;	
-		//myDir = Direction.left;
+		myDir = Direction.left;
 	}
 }

@@ -1,12 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Others\Globals.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Others/LowerVoiceGUI.cs">
     <Files>
-      <File FileName="Assets\Scripts\Others\Story_Triggers.cs" Line="600" Column="26" />
-      <File FileName="Assets\Scripts\Others\PickUp.cs" Line="21" Column="7" />
-      <File FileName="Assets\Scripts\Others\Music_Manager.cs" Line="5" Column="30" />
-      <File FileName="Assets\Scripts\Others\Globals.cs" Line="26" Column="37" />
-      <File FileName="Assets\Scripts\Hero\CharacterMovement.cs" Line="339" Column="3" />
+      <File FileName="Assets/Scripts/Others/LowerVoiceGUI.cs" Line="23" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

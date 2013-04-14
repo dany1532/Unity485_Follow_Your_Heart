@@ -59,12 +59,14 @@ public class Story_Triggers : MonoBehaviour {
 		if(!startCutscene){
 			if(myId == 1){
 				//Globals.upperVoice = "I remember that I was going to my home...";
+				lowGUI.setMotherFont();
+				lowGUI.setYellowColor();
 				Globals.lowerVoice = "Move with A-D";
 				//writeLowerVoice("Move with A-D");
 				upGUI.setMyLeft(155f);
 				upGUI.setMyTop(100f);
-				
 				lowGUI.setMyLeft(255f);
+				
 			}
 			
 			if(myId == 2){
@@ -73,7 +75,6 @@ public class Story_Triggers : MonoBehaviour {
 				writeLowerVoice("Jump with Space");
 				upGUI.setMyLeft(155f);
 				upGUI.setMyTop(100f);
-				
 				lowGUI.setMyLeft(255f);
 			}
 			
@@ -137,7 +138,8 @@ public class Story_Triggers : MonoBehaviour {
 				if(nextLevel && !startCutscene){
 					other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
 					startCutscene = true;
-					mng.playDeath();
+					if(mng != null)
+						mng.playDeath();
 					Globals.turnOffLight();
 					Globals.waitTime = 11;
 					Globals.loadNextLevelTutorial();
@@ -164,6 +166,8 @@ public class Story_Triggers : MonoBehaviour {
 				}
 				Globals.upperVoice = "I was scared, so I ran...";
 				startCutscene = true; */
+				lowGUI.setMotherFont();
+				lowGUI.setYellowColor();
 				Globals.upperVoice = "She was on the floor and at that moment...";
 				upGUI.setMyLeft(155f);
 				upGUI.setMyTop(100f);
@@ -174,7 +178,8 @@ public class Story_Triggers : MonoBehaviour {
 				other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
 				startCutscene = true;
 				Globals.deathMother = true;
-				mng.playDeath();
+				if(mng != null)
+					mng.playDeath();
 				Globals.turnOffLight();
 				Globals.waitTime = 30;
 				Globals.loadNextLevelTutorial();
@@ -227,7 +232,8 @@ public class Story_Triggers : MonoBehaviour {
 					Globals.turnOffLight();
 					Invoke("nextLevel",4f);
 					//GameObject.Find("TutorialLight").light.intensity = 0;
-					mng.playDarkness();
+					if(mng != null)
+						mng.playDarkness();
 					//Globals.loadNextLevelTutorial();
 				}
 			}
@@ -509,7 +515,7 @@ public class Story_Triggers : MonoBehaviour {
 			if(myId == 46){
 				if(!startCutscene){
 					Globals.upperVoice = "I have to find a way";
-					writeLowerVoice("Press E to float");
+					writeLowerVoice("Hold J to float");
 					lowGUI.setMotherFont();
 					lowGUI.setYellowColor();
 					startCutscene = true;
@@ -610,6 +616,7 @@ public class Story_Triggers : MonoBehaviour {
 				myEvent = StoryEvent.ev0;
 				InvokeRepeating("StoryEvent61", 0, 5.5f);
 				Globals.turnOffLight();
+				GameObject.Find("TLight").GetComponent<Light>().enabled = false;
 				Globals.waitTime = 7;
 				Globals.loadNextLevelTutorial();
 			}
@@ -1056,7 +1063,7 @@ public class Story_Triggers : MonoBehaviour {
 			//Globals.upperVoice = "I feared the worst";
 			Globals.upperVoice = "She would appear and help me find my way";
 			myEvent = StoryEvent.ev2;
-			upGUI.setMyLeft(455f);
+			upGUI.setMyLeft(200f);
 			upGUI.setMyTop(100f);
 			lowGUI.setMyLeft(255f);
 		}
@@ -1099,12 +1106,11 @@ public class Story_Triggers : MonoBehaviour {
 	
 	void StoryEvent61(){
 		if(myEvent == StoryEvent.ev0){
-			Globals.upperVoice = "It's ok mom, I did what you said";
+			Globals.upperVoice = "I did it mom, I did what you said";
 			myEvent = StoryEvent.ev1;
 			upGUI.setMyLeft(455f);
-				upGUI.setMyTop(100f);
-				
-				lowGUI.setMyLeft(255f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(255f);
 		}	
 		
 		else if(myEvent == StoryEvent.ev1){

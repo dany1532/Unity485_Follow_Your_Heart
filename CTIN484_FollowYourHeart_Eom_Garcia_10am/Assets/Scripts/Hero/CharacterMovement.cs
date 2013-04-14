@@ -222,7 +222,7 @@ public class CharacterMovement : MonoBehaviour
 			}
 		
 		// Floating
-			if(Input.GetKeyDown(KeyCode.E) && !isGrounded && canFloat)	// toggle floating while in air
+			if(Input.GetKey(KeyCode.J) && !isGrounded && canFloat)	// toggle floating while in air
 			{
 				if(!isFloating)
 				{
@@ -235,6 +235,11 @@ public class CharacterMovement : MonoBehaviour
 					isFloating = false;
 					rigidbody.useGravity = true;
 				}
+			}
+			else{
+				isFloating = false;
+				if(state != states.climb)
+					rigidbody.useGravity = true;
 			}
 			if(isFloating)
 			{
@@ -258,6 +263,17 @@ public class CharacterMovement : MonoBehaviour
 				{
 					print ("Switch activated!");
 				}
+			}
+			
+		//Something went wrong with the grounded trigger (hack)
+			if(Input.GetKeyDown(KeyCode.L)){
+				this.GetComponent<ProtagonistAnimation>().sJump = ProtagonistAnimation.StateJump.landing;
+				this.isGrounded = true;
+				this.landing = true;
+			}
+			
+			if(Input.GetKeyDown(KeyCode.M)){
+				Globals.loadNextLevel();
 			}
 			
 		

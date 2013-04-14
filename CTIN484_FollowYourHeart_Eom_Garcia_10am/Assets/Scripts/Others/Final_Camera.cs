@@ -11,7 +11,7 @@ public class Final_Camera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		endPosition.x = 20.9f;
+		endPosition.x = 25.9f;
 		endPosition.y = 5.2f;
 		endPosition.z = -12.9f;
 	}

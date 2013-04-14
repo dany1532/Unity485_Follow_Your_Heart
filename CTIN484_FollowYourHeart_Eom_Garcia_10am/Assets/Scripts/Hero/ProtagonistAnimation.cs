@@ -238,6 +238,7 @@ public class ProtagonistAnimation : MonoBehaviour {
 	void moveLanternLeft(){
 		    Vector3 loc = lantern.transform.position;
 			loc.x = this.transform.position.x -lanternOffset;
+		    loc.z = -2.25f;
 			lantern.transform.position = loc;
 				
 			loc = lanternLight.transform.position;
@@ -248,10 +249,12 @@ public class ProtagonistAnimation : MonoBehaviour {
 	void moveLanternRight(){
 			Vector3 loc = this.transform.position;
 			loc.x = this.transform.position.x +lanternOffset;
+			loc.z = -2.25f;
 			lantern.transform.position = loc;
 				
 			loc = lanternLight.transform.position;
 			loc.x = lantern.transform.position.x +lanternOffset;
+			
 			lanternLight.transform.position = loc;	
 	}
 	
