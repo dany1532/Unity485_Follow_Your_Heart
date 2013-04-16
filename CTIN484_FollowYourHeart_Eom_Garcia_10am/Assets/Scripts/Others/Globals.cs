@@ -39,7 +39,7 @@ public class Globals : MonoBehaviour
 			}
 		}
 		
-		if(heroPos != null)
+		if(GameObject.Find("_Hero") != null)
 			heroPos = GameObject.Find("_Hero").transform.position;
 	}
 	

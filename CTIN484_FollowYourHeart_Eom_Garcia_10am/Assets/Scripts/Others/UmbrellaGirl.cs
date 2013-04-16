@@ -82,6 +82,7 @@ public class UmbrellaGirl : MonoBehaviour {
 		}
 		
 		if(col.name == "GirlTriggerJumpFloat"){
+			print("here?");
 			useJump = true;
 			Invoke("enableFloat", .7f);
 		}
@@ -97,14 +98,14 @@ public class UmbrellaGirl : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision col){
-		if(col.gameObject.tag == "Ground"){
+		if(col.gameObject.tag == "dry"){
 			isGrounded = true;
 		    cancelFloat();	
 		}
 	}
 	
 	void OnCollisionExit(Collision col){
-		if(col.gameObject.tag == "Ground")
+		if(col.gameObject.tag == "dry")
 			isGrounded = false;
 	}
 	
@@ -135,7 +136,8 @@ public class UmbrellaGirl : MonoBehaviour {
 	
 	public void restart(){
 		this.gameObject.SetActive(true);
-		this.transform.position = girlCheckpoint;	
-		myDir = Direction.left;
+		this.transform.position = girlCheckpoint;
+		if(myDir == Direction.right)
+			myDir = Direction.left;
 	}
 }

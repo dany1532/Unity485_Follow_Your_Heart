@@ -107,7 +107,7 @@ public class Story_Triggers : MonoBehaviour {
 			if(myId == 6){
 				Globals.upperVoice = "I would always help her with the chores";
 				//Globals.lowerVoice = "I'm fine, dear.";
-				writeLowerVoice("Be a dear and get us some fruits from outside");
+				writeLowerVoice("Be a dear and get me an apple from outside");
 				
 				upGUI.setMyLeft(200f);
 				upGUI.setMyTop(100f);
@@ -138,8 +138,7 @@ public class Story_Triggers : MonoBehaviour {
 				if(nextLevel && !startCutscene){
 					other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
 					startCutscene = true;
-					if(mng != null)
-						mng.playDeath();
+
 					Globals.turnOffLight();
 					Globals.waitTime = 11;
 					Globals.loadNextLevelTutorial();
@@ -178,8 +177,7 @@ public class Story_Triggers : MonoBehaviour {
 				other.gameObject.GetComponent<CharacterMovement>().inCutscene = true;
 				startCutscene = true;
 				Globals.deathMother = true;
-				if(mng != null)
-					mng.playDeath();
+
 				Globals.turnOffLight();
 				Globals.waitTime = 30;
 				Globals.loadNextLevelTutorial();
@@ -232,8 +230,7 @@ public class Story_Triggers : MonoBehaviour {
 					Globals.turnOffLight();
 					Invoke("nextLevel",4f);
 					//GameObject.Find("TutorialLight").light.intensity = 0;
-					if(mng != null)
-						mng.playDarkness();
+
 					//Globals.loadNextLevelTutorial();
 				}
 			}
@@ -418,9 +415,9 @@ public class Story_Triggers : MonoBehaviour {
 			
 			if(myId == 37){
 				Globals.upperVoice = "But I still felt lost";
+				mng.lowerMusic();
 				upGUI.setMyLeft(200f);
 				upGUI.setMyTop(100f);
-				
 				lowGUI.setMyLeft(255f);
 			}
 			
@@ -527,9 +524,9 @@ public class Story_Triggers : MonoBehaviour {
 			}
 				
 			if(myId == 47){
-				Globals.lowerVoice = "Why would she talk to an insect?";
 				lowGUI.setFearFont();
 				lowGUI.setRedColor();
+				Globals.lowerVoice = "Why would she talk to an insect?";
 				upGUI.setMyLeft(100f);
 				upGUI.setMyTop(100f);
 				lowGUI.setMyLeft(200f);
@@ -588,13 +585,12 @@ public class Story_Triggers : MonoBehaviour {
 			
 			if(myId == 59){
 				playerScript = other.gameObject.GetComponent<CharacterMovement>();
-				playerScript.inCutscene = true;
 				startCutscene = true;
+				playerScript.inCutscene = true;
 				myEvent = StoryEvent.ev0;
 				InvokeRepeating("StoryEvent59", 0, 5.5f);
 				Globals.turnOffLight();
 				Globals.waitTime = 7;
-				//Globals.loadNextLevelTutorial();
 			}
 				
 			if(myId == 60){
@@ -658,6 +654,14 @@ public class Story_Triggers : MonoBehaviour {
 				upGUI.setMyLeft(300f);
 				upGUI.setMyTop(100f);
 				lowGUI.setMyLeft(200f);
+			}
+				
+			if(myId == 66){
+				lowGUI.setMotherFont();
+				lowGUI.setYellowColor();
+				Globals.lowerVoice = "Don't be afraid to fall...";
+				
+				lowGUI.setMyLeft(300f);
 			}
 		}
 		
@@ -810,6 +814,7 @@ public class Story_Triggers : MonoBehaviour {
 		else if(myEvent == StoryEvent.ev1){
 			//Globals.upperVoice = "I feared the worst";
 			Globals.lowerVoice = "Don't be afraid";
+			lowGUI.setMotherFont();
 			myEvent = StoryEvent.ev2;
 			upGUI.setMyLeft(455f);
 				upGUI.setMyTop(100f);
@@ -922,6 +927,8 @@ public class Story_Triggers : MonoBehaviour {
 		
 		else if(myEvent == StoryEvent.ev1){
 			Globals.upperVoice = "I couldn't find the strength to get up";
+			lowGUI.setMotherFont();
+			lowGUI.setYellowColor();
 			//Globals.lowerVoice = "Why do we fall?";
 			writeLowerVoice("Why do we fall?");
 			myEvent = StoryEvent.ev2;
@@ -1082,16 +1089,17 @@ public class Story_Triggers : MonoBehaviour {
 	
 	void StoryEvent59(){
 		if(myEvent == StoryEvent.ev0){
+			Globals.turnOffLight();
 			Globals.upperVoice = "I'm almost there";
 			myEvent = StoryEvent.ev1;
 			upGUI.setMyLeft(455f);
-				upGUI.setMyTop(100f);
-				
-				lowGUI.setMyLeft(255f);
+			upGUI.setMyTop(100f);
+			lowGUI.setMyLeft(255f);
 		}	
 		
 		else if(myEvent == StoryEvent.ev1){
 			//Globals.upperVoice = "I feared the worst";
+			Globals.turnOffLight();
 			Globals.upperVoice = "It's been a long journey";
 			myEvent = StoryEvent.ev2;
 			upGUI.setMyLeft(455f);

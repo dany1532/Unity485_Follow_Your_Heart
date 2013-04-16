@@ -4,7 +4,7 @@ using System.Collections;
 public class BeginningStory : MonoBehaviour {
 	public enum StoryEvent{ev0,ev1, ev2, ev3, ev4, ev5, ev6,ev7, do_nothing};
 	public StoryEvent myEvent;
-	public int nextEventSeconds = 3;
+	public float nextEventSeconds = 2.5f;
 	public Font myFont;
 	private Music_Manager mng;
 	
@@ -58,13 +58,13 @@ public class BeginningStory : MonoBehaviour {
 		else if(myEvent == StoryEvent.ev6){
 			GameObject g = GameObject.Find("Environment_Scripts");
 			GUIStyle style = g.GetComponent<UpperVoiceGUI>().myStyle;
-			g.GetComponent<UpperVoiceGUI>().freezeDuration = 4f;
+			g.GetComponent<UpperVoiceGUI>().freezeDuration = 3f;
 			style.font = myFont;
 			style.fontSize = 100;
 			
 			Globals.upperVoice = "\n\n                  Follow Your Heart";
 			myEvent = StoryEvent.do_nothing;
-			Invoke("event7", nextEventSeconds + 4);
+			Invoke("event7", nextEventSeconds + 3);
 		}
 		
 	}
@@ -94,7 +94,7 @@ public class BeginningStory : MonoBehaviour {
 	private void event7(){
 		//GameObject g = GameObject.Find("Environment_Scripts");
 		//Destroy(g);
-		mng.playHome();
+		//mng.playHome();
 		Application.LoadLevel(1);	
 	}
 	

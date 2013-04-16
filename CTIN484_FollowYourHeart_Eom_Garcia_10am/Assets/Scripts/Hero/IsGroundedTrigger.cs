@@ -22,19 +22,41 @@ public class IsGroundedTrigger : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.tag == "Ground")
+		if(other.tag == "grass")
 		{
 			charMovement.isGrounded = true;
 			charMovement.landing = true;
 			anim.sJump = ProtagonistAnimation.StateJump.landing;
-			//charMovement.state = CharacterMovement.states.idleLeft;
-			
+			anim.audioState = ProtagonistAnimation.AudioState.grass;
+		}
+		else if(other.tag == "dry")
+		{
+			charMovement.isGrounded = true;
+			charMovement.landing = true;
+			anim.sJump = ProtagonistAnimation.StateJump.landing;
+			anim.audioState = ProtagonistAnimation.AudioState.dry;
+		}
+		
+		else if(other.tag == "wet")
+		{
+			charMovement.isGrounded = true;
+			charMovement.landing = true;
+			anim.sJump = ProtagonistAnimation.StateJump.landing;
+			anim.audioState = ProtagonistAnimation.AudioState.wet;
+		}
+		
+		else if (other.tag == "ground"){
+			print("here?");
+			charMovement.isGrounded = true;
+			charMovement.landing = true;
+			anim.sJump = ProtagonistAnimation.StateJump.landing;
+			anim.audioState = ProtagonistAnimation.AudioState.none;
 		}
 	}
 	
 	void OnTriggerExit(Collider other)
 	{
-		if(other.tag == "Ground")
+		if(other.tag == "grass" || other.tag == "dry" || other.tag == "wet" || other.tag == "ground")
 		{
 			charMovement.isGrounded = false;
 		}

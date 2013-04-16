@@ -7,6 +7,8 @@ public class ProtagonistAnimation : MonoBehaviour {
 	public string lastClip;
 	public enum DirectionJump {left,right,none}
 	public enum StateJump {launch, air,landing, none};
+	public enum AudioState{grass, dry, wet, none};
+	public AudioState audioState = AudioState.grass;
 	public DirectionJump dJump = DirectionJump.none;
 	public StateJump sJump = StateJump.none;
 	private bool doneLanding;
@@ -14,6 +16,7 @@ public class ProtagonistAnimation : MonoBehaviour {
 	private Transform lantern;
 	public Transform lanternLight;
 	private bool falling = false;
+	private PSoundFX audio;
 	//public string[] beginning = new string[] {"Idle_Left", "Idle_Right"};
 	
 	
@@ -21,6 +24,7 @@ public class ProtagonistAnimation : MonoBehaviour {
 	void Start () {
 		anim = this.transform.FindChild("Hero_Sprite").GetComponent<tk2dAnimatedSprite>();
 		charMovement = this.GetComponent<CharacterMovement>();
+		audio = this.GetComponent<PSoundFX>();
 		//lastClip = "Idle_Left";
 		lantern = this.transform.FindChild("Lantern");
 		
@@ -59,7 +63,8 @@ public class ProtagonistAnimation : MonoBehaviour {
 		
 	//Jumping animation
 		if(charMovement.inCutscene){
-			this.transform.FindChild("Hero_Sprite").GetComponent<MeshRenderer>().enabled = false;	
+			this.transform.FindChild("Hero_Sprite").GetComponent<MeshRenderer>().enabled = false;
+			anim.Stop();
 		}
 		
 		else{
@@ -107,22 +112,6 @@ public class ProtagonistAnimation : MonoBehaviour {
 			};	
 			
 		}
-		
-	/*//Landing animation
-		else if(charMovement.landing &&
-			   !anim.IsPlaying("Land_Right") && !anim.IsPlaying("Land_Left")){
-			
-			if(dJump == DirectionJump.right){
-				anim.Play("Land_Right");	
-				anim.animationCompleteDelegate = LandCompleteDelegate;	
-			}
-			
-			else if(dJump == DirectionJump.left){
-				anim.Play("Land_Left");	
-				anim.animationCompleteDelegate = LandCompleteDelegate;
-			}
-			
-		}*/
 			
 	//Landing animation
 		else if(charMovement.landing &&
@@ -137,6 +126,15 @@ public class ProtagonistAnimation : MonoBehaviour {
 				anim.Play("Land_Left");	
 				anim.animationCompleteDelegate = LandCompleteDelegate;
 			}
+		
+			if(audioState == AudioState.grass)
+				audio.playGrassLanding();
+			
+			else if (audioState == AudioState.dry)
+				audio.playDryLanding();
+			
+			else if (audioState == AudioState.wet)
+				audio.playWetLanding();
 			
 		}
 		
@@ -152,9 +150,12 @@ public class ProtagonistAnimation : MonoBehaviour {
 		else if(charMovement.state == CharacterMovement.states.walkLeft &&
 							doneLanding && !anim.IsPlaying("Walk_Left")){
 			anim.Play("Walk_Left");
+			anim.animationEventDelegate = WalkingEventDelegate;
 			anim.animationCompleteDelegate = null;
 			lastClip = "Walk_Left";
 			moveLanternLeft();
+			//if(audioState == AudioState.grass)
+				
 		}
 		
 	//Idle Right animation
@@ -170,6 +171,7 @@ public class ProtagonistAnimation : MonoBehaviour {
 			     			doneLanding && !anim.IsPlaying("Walk_Right")){
 			anim.Play("Walk_Right");
 			anim.animationCompleteDelegate = null;
+			anim.animationEventDelegate = WalkingEventDelegate;
 			lastClip = "Walk_Right";
 			moveLanternRight();
 		}
@@ -217,6 +219,31 @@ public class ProtagonistAnimation : MonoBehaviour {
 		falling = false;
 		
     }
+	
+	void WalkingEventDelegate(tk2dAnimatedSprite sprite, tk2dSpriteAnimationClip clip, tk2dSpriteAnimationFrame frame, int frameNum){
+		if(frame.eventInfo == "step1"){
+			if(audioState == AudioState.grass)
+				audio.playGrassWalkingS1();
+			
+			else if(audioState == AudioState.dry)
+				audio.playDryWalkingS1();
+			
+			else if(audioState == AudioState.wet)
+				audio.playWetWalkingS1();
+		}
+		
+		else if(frame.eventInfo == "step2"){
+			if(audioState == AudioState.grass)
+				audio.playGrassWalkingS2();
+			
+			else if(audioState == AudioState.dry)
+				audio.playDryWalkingS2();
+			
+			else if(audioState == AudioState.wet)
+				audio.playWetWalkingS2();
+		}
+			
+	}
 	
 	void JumpCompleteDelegate(tk2dAnimatedSprite sprite, int clipId)
     {

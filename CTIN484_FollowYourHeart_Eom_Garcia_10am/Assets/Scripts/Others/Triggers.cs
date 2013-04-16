@@ -57,6 +57,7 @@ public class Triggers : MonoBehaviour
 		beenKilled = false;
 		mySprite.SetActive(true);
 		this.GetComponent<CharacterMovement>().inCutscene = false;
+		this.GetComponent<CharacterMovement>().canClimb = false;
 		
 		this.rigidbody.constraints = RigidbodyConstraints.FreezePositionZ 
 									| RigidbodyConstraints.FreezeRotation;
