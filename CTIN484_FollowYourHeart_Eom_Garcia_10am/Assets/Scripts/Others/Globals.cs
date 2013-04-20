@@ -23,7 +23,7 @@ public class Globals : MonoBehaviour
 	public static Transform level1;
 	public static Transform level2;
 	public GameObject tutorialLight;
-	private static int currentLevel = 1;
+	private static int currentLevel = 0;
 	private static bool fadeLight = false;
 	public int fadeSpeed = 3;
 	

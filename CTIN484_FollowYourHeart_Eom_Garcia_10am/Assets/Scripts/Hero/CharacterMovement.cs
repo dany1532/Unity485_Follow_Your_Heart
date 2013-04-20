@@ -41,6 +41,7 @@ public class CharacterMovement : MonoBehaviour
 	public bool inCutscene = false;
 	public bool landing = false;
 	private bool isRockLeft = false;
+	public bool throwingRock = false;
 	
 	
 	private float ladderPosX;
@@ -56,8 +57,6 @@ public class CharacterMovement : MonoBehaviour
 	
 	void Update()
 	{
-		// TEMP
-			//print (state);
 		
 		if(!inCutscene)
 		{
@@ -104,16 +103,18 @@ public class CharacterMovement : MonoBehaviour
 					
 					isRockLeft = true;
 		
-					if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
-					{
-						transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+					if(!throwingRock){
+						if(!rigidbody.SweepTest(Vector3.left, out hit, Time.deltaTime * walkSpeed))
+						{
+							transform.Translate (Vector3.left * Time.deltaTime * walkSpeed );
+						}
 					}
 					
 					if(isGrounded && !landing && state != states.floating 
 													&& state != states.climb){
 							state = states.walkLeft;	
 					}
-					else
+					else if(state != states.falling)
 							state = states.jump;
 		
 				}
@@ -123,16 +124,17 @@ public class CharacterMovement : MonoBehaviour
 					
 					RaycastHit hit;
 					isRockLeft = false;
-					if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
-					{
-						transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+					if(!throwingRock){
+						if(!rigidbody.SweepTest(Vector3.right, out hit, Time.deltaTime * walkSpeed))
+						{
+							transform.Translate (Vector3.right * Time.deltaTime * walkSpeed );
+						}
 					}
-						
 					if(isGrounded && !landing && state != states.floating
 															&& state != states.climb){
 							state = states.walkRight;
 					}
-					else
+					else if(state != states.falling)
 							state = states.jump;
 				}
 					
@@ -277,17 +279,7 @@ public class CharacterMovement : MonoBehaviour
 			}
 			
 		
-			if(Input.GetKeyDown(KeyCode.F)){
-				Vector3 loc = this.transform.position;
-				if(isRockLeft){
-					loc.x -= 2;
-				}
-				else{
-					loc.x += 2;
-				}
-				loc.y += 1f;
-				Instantiate(rockPrefab,	loc, Quaternion.identity);
-			}
+
 	  	}
 	}
 	
@@ -355,6 +347,10 @@ public class CharacterMovement : MonoBehaviour
 		hasApples = true;
 	}
 	
+	public void enableRockThrowing(){
+		this.GetComponent<ProtagonistAnimation>().canThrowRock = true;
+	}
+	
 	void OnTriggerExit(Collider collider)
 	{
 		if(collider.tag == "Ladder")
@@ -362,7 +358,7 @@ public class CharacterMovement : MonoBehaviour
 			canClimb = false;
 			this.rigidbody.useGravity = true;
 		}
-		if(collider.tag == "Switch")
+		if(collider.tag == "Switch") 
 		{
 			nearSwitch = false;
 		}

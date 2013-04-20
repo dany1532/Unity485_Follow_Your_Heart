@@ -15,8 +15,12 @@ public class ProtagonistAnimation : MonoBehaviour {
 	private float lanternOffset = 1.6f;
 	private Transform lantern;
 	public Transform lanternLight;
-	private bool falling = false;
+	public bool falling = false;
 	private PSoundFX audio;
+	public GameObject rockPrefab;
+	public bool throwingRock = false;
+	public bool reloadingRock = false;
+	public bool canThrowRock = false;
 	//public string[] beginning = new string[] {"Idle_Left", "Idle_Right"};
 	
 	
@@ -36,6 +40,22 @@ public class ProtagonistAnimation : MonoBehaviour {
 		// Jump direction
 		//if(charMovement.state == CharacterMovement.states.jump && !anim.IsPlaying("InitialJump_Left"))
 		//{
+		
+		if(Input.GetKeyDown(KeyCode.F) && !throwingRock && canThrowRock ){
+			throwingRock = true;
+			anim.Play("Throw_Left");
+			anim.animationCompleteDelegate = ThrowCompleteDelegate;
+				/*Vector3 loc = this.transform.position;
+				if(isRockLeft){
+					loc.x -= 2;
+				}
+				else{
+					loc.x += 2;
+				}
+				loc.y += 1f;
+				Instantiate(rockPrefab,	loc, Quaternion.identity);*/
+		}
+		
 			if(sJump == StateJump.air)
 			{
 				if (dJump == DirectionJump.left)
@@ -93,7 +113,8 @@ public class ProtagonistAnimation : MonoBehaviour {
 		
 	//falling animation
 		else if(!charMovement.isGrounded && !anim.IsPlaying("Falling_Left")&&
-			  !falling && charMovement.state != CharacterMovement.states.jump){
+			  !falling && charMovement.state != CharacterMovement.states.jump
+			   && !throwingRock){
 			
 			charMovement.state = CharacterMovement.states.falling;
 			falling = true;
@@ -140,15 +161,23 @@ public class ProtagonistAnimation : MonoBehaviour {
 		
 	//Idle Left animation
 		else if(charMovement.state == CharacterMovement.states.idleLeft &&
-			  		!anim.IsPlaying("Land_Left") && !anim.IsPlaying("Idle_Left")){
+			  		!anim.IsPlaying("Land_Left") && !anim.IsPlaying("Idle_Left")
+			         && !throwingRock){
 			 anim.Play("Idle_Left");
 			 anim.animationCompleteDelegate = null;	
 			 lastClip = "Idle_Left";
 		}
 		
+		else if(charMovement.state == CharacterMovement.states.idleLeft &&
+			  		!anim.IsPlaying("Land_Left") && !anim.IsPlaying("Idle_Left")
+			         && throwingRock){
+			charMovement.throwingRock = true;
+		}
+		
 	//Walking Left animation
 		else if(charMovement.state == CharacterMovement.states.walkLeft &&
-							doneLanding && !anim.IsPlaying("Walk_Left")){
+							doneLanding && !anim.IsPlaying("Walk_Left")
+			                 && !throwingRock){
 			anim.Play("Walk_Left");
 			anim.animationEventDelegate = WalkingEventDelegate;
 			anim.animationCompleteDelegate = null;
@@ -158,17 +187,31 @@ public class ProtagonistAnimation : MonoBehaviour {
 				
 		}
 		
+		else if(charMovement.state == CharacterMovement.states.walkLeft &&
+							doneLanding && !anim.IsPlaying("Walk_Left")
+			                 && throwingRock){
+			charMovement.throwingRock = true;
+		}
+		
 	//Idle Right animation
 		else if(charMovement.state == CharacterMovement.states.idleRight &&
-			  		!anim.IsPlaying("Land_Right") && !anim.IsPlaying("Idle_Right")){
+			  		!anim.IsPlaying("Land_Right") && !anim.IsPlaying("Idle_Right")
+			         && !throwingRock){
 			 anim.Play("Idle_Right");
 			 anim.animationCompleteDelegate = null;	
 			 lastClip = "Idle_Right";
 		}
 		
+		else if(charMovement.state == CharacterMovement.states.idleRight &&
+			  		!anim.IsPlaying("Land_Right") && !anim.IsPlaying("Idle_Right")
+			         && throwingRock){
+			charMovement.throwingRock = true;
+		}
+		
 	//Walking Right animation
 		else if(charMovement.state == CharacterMovement.states.walkRight &&
-			     			doneLanding && !anim.IsPlaying("Walk_Right")){
+			     			doneLanding && !anim.IsPlaying("Walk_Right")
+			                && !throwingRock){
 			anim.Play("Walk_Right");
 			anim.animationCompleteDelegate = null;
 			anim.animationEventDelegate = WalkingEventDelegate;
@@ -217,6 +260,8 @@ public class ProtagonistAnimation : MonoBehaviour {
 		charMovement.landing = false;
 		doneLanding = true;
 		falling = false;
+		throwingRock = false;
+		charMovement.throwingRock = false;
 		
     }
 	
@@ -262,6 +307,17 @@ public class ProtagonistAnimation : MonoBehaviour {
 		}
 	}
 	
+	void ThrowCompleteDelegate(tk2dAnimatedSprite sprite, int clipId)
+    {
+		throwingRock = false;
+		charMovement.throwingRock = false;
+		if(charMovement.state == CharacterMovement.states.jump && !falling
+			&& sJump == StateJump.launch){
+			charMovement.state = CharacterMovement.states.falling;
+		}
+			
+	}
+	
 	void moveLanternLeft(){
 		    Vector3 loc = lantern.transform.position;
 			loc.x = this.transform.position.x -lanternOffset;
@@ -288,6 +344,8 @@ public class ProtagonistAnimation : MonoBehaviour {
 	void DoneLanding(){
 		anim.Stop();
 		sJump = StateJump.none;
+		throwingRock = false;
+		charMovement.throwingRock = false;
 		
 	}
 }

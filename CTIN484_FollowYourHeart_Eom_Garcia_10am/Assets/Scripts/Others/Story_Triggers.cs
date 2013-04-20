@@ -980,6 +980,7 @@ public class Story_Triggers : MonoBehaviour {
 		else if(myEvent == StoryEvent.ev1){
 			Globals.upperVoice = "We would always go there and throw rocks...";
 			writeLowerVoice("Throw a rock with F");
+			playerScript.enableRockThrowing();
 			lowGUI.setMotherFont();
 			lowGUI.setYellowColor();
 			myEvent = StoryEvent.ev2;
