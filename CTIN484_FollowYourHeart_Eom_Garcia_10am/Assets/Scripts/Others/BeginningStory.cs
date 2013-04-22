@@ -19,8 +19,7 @@ public class BeginningStory : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Space)){
-			mng.playHome();
-		Application.LoadLevel(1);
+			Globals.loadNextLevel();
 		}
 			
 		if(myEvent == StoryEvent.ev0){
@@ -95,7 +94,8 @@ public class BeginningStory : MonoBehaviour {
 		//GameObject g = GameObject.Find("Environment_Scripts");
 		//Destroy(g);
 		//mng.playHome();
-		Application.LoadLevel(1);	
+		Globals.loadNextLevel();
+		//Application.LoadLevel();	
 	}
 	
 

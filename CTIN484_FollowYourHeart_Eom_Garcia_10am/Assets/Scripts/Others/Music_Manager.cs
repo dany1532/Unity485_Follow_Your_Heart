@@ -7,7 +7,7 @@ public class Music_Manager : MonoBehaviour {
 	public AudioClip motherDeath;
 	public AudioClip darkness;
 	public AudioClip newFriend;
-	private float lowerSpeed = 55f;
+	private float lowerSpeed = 30f;
 	private float volume;
 	private bool shouldLowerVol = false;
 	private AudioSource mySource;
@@ -51,6 +51,14 @@ public class Music_Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	
+	}
+	
+	public void DontDestroy(){
+		DontDestroyOnLoad(this);
+	}
+	
+	public void destroyObject(){
+		GameObject.DestroyObject(this);
 	}
 	
 	// Update is called once per frame

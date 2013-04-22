@@ -43,8 +43,14 @@ public class ProtagonistAnimation : MonoBehaviour {
 		
 		if(Input.GetKeyDown(KeyCode.F) && !throwingRock && canThrowRock ){
 			throwingRock = true;
-			anim.Play("Throw_Left");
+			if(dJump == DirectionJump.left || lastClip == "Idle_Left" || lastClip == "Walk_Left"){
+				anim.Play("Throw_Left");
+			}
+			else if(dJump == DirectionJump.right || lastClip == "Idle_Right" || lastClip == "Walk_Right"){
+				anim.Play("Throw_Right");
+			}
 			anim.animationCompleteDelegate = ThrowCompleteDelegate;
+			anim.animationEventDelegate = RockDelegate;
 				/*Vector3 loc = this.transform.position;
 				if(isRockLeft){
 					loc.x -= 2;
@@ -288,6 +294,11 @@ public class ProtagonistAnimation : MonoBehaviour {
 				audio.playWetWalkingS2();
 		}
 			
+	}
+	
+	void RockDelegate(tk2dAnimatedSprite sprite, tk2dSpriteAnimationClip clip, tk2dSpriteAnimationFrame frame, int frameNum){
+		if(frame.eventInfo == "Rock")
+			charMovement.throwRock();
 	}
 	
 	void JumpCompleteDelegate(tk2dAnimatedSprite sprite, int clipId)

@@ -289,6 +289,16 @@ public class CharacterMovement : MonoBehaviour
 		
 	}
 	
+	public void throwRock(){
+		Vector3 loc = this.transform.position;
+		if(isRockLeft)
+			loc.x -= 2;	
+		else
+			loc.x += 2;
+		loc.y +=0.4f;
+		Instantiate(rockPrefab,	loc, Quaternion.identity);
+	}
+	
 	public bool isRockGoingLeft(){
 		return isRockLeft;
 	}

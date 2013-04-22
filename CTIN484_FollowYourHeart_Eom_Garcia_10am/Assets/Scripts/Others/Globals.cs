@@ -23,26 +23,41 @@ public class Globals : MonoBehaviour
 	public static Transform level1;
 	public static Transform level2;
 	public GameObject tutorialLight;
+	public GameObject thunder;
+	public static GameObject myThunder;
 	private static int currentLevel = 0;
 	private static bool fadeLight = false;
 	public int fadeSpeed = 3;
 	
 	void Awake() {
-		if(GameObject.Find("_Hero") != null){
-			vbParent = (new GameObject()).transform;
-			vbParent.position = GameObject.Find("_Hero").transform.position;
-			vbParent.gameObject.name = "CandleP";
-			for (int i=0; i<100; i++) {
-				Vector3 pos = new Vector3(Random.value *+720,Random.value*100 - 40, Random.value*200 + 10);
-				Transform vb = Instantiate(vectionCandle, pos, Quaternion.identity) as Transform;
-				vb.parent = vbParent;
+		if(currentLevel == 1){
+			if(GameObject.Find("_Hero") != null){
+				vbParent = (new GameObject()).transform;
+				vbParent.position = GameObject.Find("_Hero").transform.position;
+				vbParent.gameObject.name = "CandleP";
+				for (int i=0; i<100; i++) {
+					Vector3 pos = new Vector3(Random.value *+720,Random.value*100 - 40, Random.value*200 + 10);
+					Transform vb = Instantiate(vectionCandle, pos, Quaternion.identity) as Transform;
+					vb.parent = vbParent;
+				}
 			}
+		}
+		
+		if(thunder != null){
+			myThunder = thunder;
 		}
 		
 		if(GameObject.Find("_Hero") != null)
 			heroPos = GameObject.Find("_Hero").transform.position;
 	}
 	
+	public static void activateThunder(){
+		myThunder.GetComponent<Light>().intensity = 1f;
+	}
+	
+	public static void cancelThunder(){
+		myThunder.GetComponent<Light>().intensity = 0f;
+	}
 
 	
 	public static void loadNextLevelTutorial(){
@@ -76,9 +91,11 @@ public class Globals : MonoBehaviour
 	}
 	
 	public static void turnOffLight(){
-		Transform parent = GameObject.Find("CandleP").transform;
-		foreach(Transform child in parent){
-			child.FindChild("Candle_Halo").light.enabled = false;	
+		if(currentLevel == 1){
+			Transform parent = GameObject.Find("CandleP").transform;
+			foreach(Transform child in parent){
+				child.FindChild("Candle_Halo").light.enabled = false;	
+			}
 		}
 		Transform lantern = GameObject.Find("_Hero").transform.FindChild("Lantern");
 		lantern.FindChild("Candle_Light").light.enabled = false;
@@ -96,32 +113,34 @@ public class Globals : MonoBehaviour
 	}
 	
 	void Update(){
-		if(GameObject.Find("_Hero") != null){
-			float heroX = GameObject.Find("_Hero").transform.position.x;
-			float heroY = GameObject.Find("_Hero").transform.position.y;
-			foreach (Transform child in vbParent){
-				if (-heroX+child.position.x > 100){
-					Vector3 loc = child.position;
-					loc.x -= 200;
-					child.position = loc;
-				}
-				
-				else if(heroX-child.position.x > 100){
-					Vector3 loc = child.position;
-					loc.x += 200;
-					child.position = loc;	
-				}
-				
-				if(-heroY+child.position.y > 80){
-					Vector3 loc = child.position;
-					loc.y -= 100;
-					child.position = loc;
-				}
-				
-				else if(heroY - child.position.y > 80){
-					Vector3 loc = child.position;
-					loc.y += 100;
-					child.position = loc;	
+		if(currentLevel == 1){
+			if(GameObject.Find("_Hero") != null){
+				float heroX = GameObject.Find("_Hero").transform.position.x;
+				float heroY = GameObject.Find("_Hero").transform.position.y;
+				foreach (Transform child in vbParent){
+					if (-heroX+child.position.x > 100){
+						Vector3 loc = child.position;
+						loc.x -= 200;
+						child.position = loc;
+					}
+					
+					else if(heroX-child.position.x > 100){
+						Vector3 loc = child.position;
+						loc.x += 200;
+						child.position = loc;	
+					}
+					
+					if(-heroY+child.position.y > 80){
+						Vector3 loc = child.position;
+						loc.y -= 100;
+						child.position = loc;
+					}
+					
+					else if(heroY - child.position.y > 80){
+						Vector3 loc = child.position;
+						loc.y += 100;
+						child.position = loc;	
+					}
 				}
 			}
 		}

@@ -48,7 +48,12 @@ public class Story_Triggers : MonoBehaviour {
 	}
 	
 	public void nextLevel(){
+		mng.destroyObject();
 		Globals.loadNextLevel();	
+	}
+	
+	public void cancelThunder(){
+		Globals.cancelThunder();
 	}
 	
 	
@@ -165,6 +170,8 @@ public class Story_Triggers : MonoBehaviour {
 				}
 				Globals.upperVoice = "I was scared, so I ran...";
 				startCutscene = true; */
+				mng.playDeath();
+				mng.DontDestroy();
 				lowGUI.setMotherFont();
 				lowGUI.setYellowColor();
 				Globals.upperVoice = "She was on the floor and at that moment...";
@@ -214,6 +221,7 @@ public class Story_Triggers : MonoBehaviour {
 			
 			if(myId == 15){
 				Globals.upperVoice = "Until finally...";
+				mng.lowerMusic();
 				upGUI.setMyLeft(455f);
 				upGUI.setMyTop(100f);
 				
@@ -224,6 +232,7 @@ public class Story_Triggers : MonoBehaviour {
 				if(!startCutscene){
 					startCutscene = true;
 					Globals.upperVoice = "I just gave up...";
+					
 					upGUI.setMyLeft(455f);
 					upGUI.setMyTop(100f);
 					lowGUI.setMyLeft(255f);
@@ -663,10 +672,16 @@ public class Story_Triggers : MonoBehaviour {
 				
 				lowGUI.setMyLeft(300f);
 			}
+			
+			if(myId == 67){
+				not = true;
+				Globals.activateThunder();
+				Invoke("cancelThunder",0.5f);
+			}
 		}
 		
 		if(!not)
-		startCutscene = true;
+			startCutscene = true;
 			
 	 }		
 }

@@ -21,16 +21,17 @@ public class Triggers : MonoBehaviour
 	
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.name == "Death_Fall" ){
+		/*if(other.gameObject.name == "Death_Fall" ){
 			Vector3 loc = Globals.currentCheckPoint.transform.position;
 			loc.z = 1.25f;
 			this.transform.position = loc;
 			mySprite = this.transform.FindChild("Hero_Sprite").gameObject;
 			Restart();
 		}
-		
+		*/
 		if(!beenKilled && other.gameObject.name == "Spike" ||
-			other.gameObject.name == "Boulder_Spikes" || other.gameObject.name == "Enemy" ){
+			other.gameObject.name == "Boulder_Spikes" || other.gameObject.name == "Enemy"
+			|| other.gameObject.name == "Death_Fall"){
 			
 			Invoke("Restart", 2f);
 			beenKilled = true;

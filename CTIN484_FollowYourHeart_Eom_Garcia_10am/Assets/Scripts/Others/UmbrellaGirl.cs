@@ -82,7 +82,6 @@ public class UmbrellaGirl : MonoBehaviour {
 		}
 		
 		if(col.name == "GirlTriggerJumpFloat"){
-			print("here?");
 			useJump = true;
 			Invoke("enableFloat", .7f);
 		}

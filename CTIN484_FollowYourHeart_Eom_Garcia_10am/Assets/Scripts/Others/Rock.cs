@@ -8,15 +8,19 @@ public class Rock : MonoBehaviour {
 	void Start () {
 		isLeft = GameObject.Find("_Hero").GetComponent<CharacterMovement>().
 														   isRockGoingLeft();
-		Invoke("DestroyMe", 5);
+		if(isLeft)
+			rigidbody.AddForce(Vector3.left * 700);
+		else
+			rigidbody.AddForce(Vector3.right * 700);
+		Invoke("DestroyMe", 3);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(isLeft)
-			transform.Translate(Vector3.left * Time.deltaTime * rockSpeed);
-		else
-			transform.Translate(Vector3.right * Time.deltaTime * rockSpeed);
+		
+			//transform.Translate(Vector3.left * Time.deltaTime * rockSpeed);
+		//else
+			//transform.Translate(Vector3.right * Time.deltaTime * rockSpeed);
 	}
 	
 	void OnTriggerEnter(Collider col){
